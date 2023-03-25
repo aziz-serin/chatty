@@ -1,28 +1,40 @@
 import configparser
+from configparser import NoSectionError
+import logging
 
+"""
+Has the following instance variables:
+    - cnf for configparser instance
+    - entries is a dict which contains the given config
+    - path for config file path
+    - section for the name of the section
+"""
 class Config:
-    path:str
-    entries:dict
 
-    def __init__(self, path:str):
+    def __init__(self, path:str, section:str):
+        logging.basicConfig(level=logging.DEBUG)
+        self.cnf = configparser.ConfigParser()
         self.path = path
-        self.entries = {}
-
-    def load_config(self):
-        cnf = configparser.ConfigParser()
-        cnf.read("resources/config.ini")
-        cnf.options('personal_information')
-        self.entries = dict(cnf.items('personal_information'))
+        self.section = section
+        self.cnf.read(path)
+        if self.__file_empty():
+            raise NoSectionError(section)
+        self.cnf.options(section)
+        self.entries = dict(self.cnf.items(section))
 
     """
     Use this to check if config input is needed when the app is launched for the first time 
     """
     def __file_empty(self) -> bool:
-        return True if len(self.entries.keys()) == 0 else False
+        if (not self.cnf.has_section(self.section)) or len(self.cnf.items()) == 0:
+            logging.debug(f"Config is either empty or missing the given section {self.section}")
+            return True
+        return False
 
-    def update_config(self, key:str, value):
-        pass
-
-    def get_entries(self):
-        return self.entries
-
+    def save_config(self):
+        config_parser = configparser.ConfigParser()
+        config_parser.add_section(self.section)
+        for key, value in self.entries.items():
+            config_parser.set(self.section, key, value)
+        with open(self.path, "w") as f:
+            config_parser.write(f)

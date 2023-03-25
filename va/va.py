@@ -5,16 +5,15 @@ from configparser import NoSectionError
 logging.basicConfig(level = logging.DEBUG)
 
 def main():
-    config = get_config("resources/config.ini")
+    config = get_config("resources/config.ini", "personal_information")
+    entries = config.entries
+    print(entries)
 
-def get_config(path:str) -> Config:
-    config = Config(path)
+def get_config(path:str, section:str) -> Config:
     try:
-        config.load_config()
-    except NoSectionError as err:
-        logging.debug(err)
+        return Config(path, section)
+    except NoSectionError:
         quit()
-    return config
 
 if __name__ == "__main__":
     main()
