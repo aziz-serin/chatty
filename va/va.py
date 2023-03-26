@@ -15,7 +15,7 @@ def get_config(path:str, section:str) -> Config:
     try:
         return Config(path, section)
     except NoSectionError:
-        quit()
+        quit(1)
 
 def get_singular_response(message:str, config:Config):
     ai = OpenAI(config=config)
@@ -23,7 +23,7 @@ def get_singular_response(message:str, config:Config):
         return ai.send_message(message=message, conversation=False)
     except (InvalidMessageError, TokenLimitError, NullResponseError) as err:
         logging.error(err.message)
-        quit()
+        quit(1)
 
 if __name__ == "__main__":
     main()

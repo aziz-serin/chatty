@@ -2,7 +2,6 @@ import requests
 import logging
 from requests import Response
 from . import api_key, moderation_url
-from .util import str2bool
 
 logging.basicConfig(level = logging.DEBUG)
 
@@ -35,7 +34,6 @@ def __parse_reasons(categories:dict) -> list:
             reasons.append(key)
     return reasons
 
-
 def __request(message:str) -> Response:
     headers = {
         "Content-Type": "application/json",
@@ -44,4 +42,13 @@ def __request(message:str) -> Response:
     data = {
         "input": message
     }
-    return requests.post(moderation_url, headers=headers, json=data)
+    try:
+        response = requests.post(moderation_url, headers=headers, json=data)
+        response.raise_for_status()
+        return response
+    except requests.exceptions.HTTPError as err:
+        logging.error(err.response)
+        quit(1)
+    except requests.exceptions.RequestException as err:
+        logging.debug(err.response)
+        quit(1)
