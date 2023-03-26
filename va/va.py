@@ -1,6 +1,6 @@
 import logging
 from openai_tools.config.config_manager import Config
-from openai_tools.ai import OpenAI
+from openai_tools.ai_chat import OpenAIChat
 from openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError
 from configparser import NoSectionError
 
@@ -18,7 +18,7 @@ def get_config(path:str, section:str) -> Config:
         quit(1)
 
 def get_singular_response(message:str, config:Config):
-    ai = OpenAI(config=config)
+    ai = OpenAIChat(config=config)
     try:
         return ai.send_message(message=message, conversation=False)
     except (InvalidMessageError, TokenLimitError, NullResponseError) as err:
