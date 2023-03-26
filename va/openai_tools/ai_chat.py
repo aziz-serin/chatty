@@ -2,7 +2,7 @@ import openai
 import logging
 from .config.config_manager import Config
 from .moderation import isValidPrompt
-from .error import InvalidMessageError, TokenLimitError, NullResponseError
+from .error import InvalidMessageError, TokenLimitError, NullResponseError, VAError
 from .ai import OpenAI
 
 logging.basicConfig(level = logging.DEBUG)
@@ -57,7 +57,7 @@ class OpenAIChat(OpenAI):
         self.messages.append(
             {self.role: self.user, self.content: message}
         )
-        response = openai.ChatCompletion.create(model=self.model, messages=self.messages)
+        response = self.__send_request()
         finish_reason = response['choices'][0]['finish_reason']
         self.token_count = int(response["usage"]["total_tokens"])
         self.__handle_reason(finish_reason)
@@ -66,6 +66,16 @@ class OpenAIChat(OpenAI):
         self.__handle_reply(reply, conversation)
         return reply
 
+    def __send_request(self):
+        try:
+            return openai.ChatCompletion.create(model=self.model, messages=self.messages)
+        except openai.OpenAIError as err:
+            logging.error(err.json_body)
+            raise VAError(err.json_body)
+
+    """
+    Cache the response and the sent prompt if the interaction is a conversation.
+    """
     def __handle_reply(self, reply: str, conversation:bool):
         if conversation:
             self.messages.append(

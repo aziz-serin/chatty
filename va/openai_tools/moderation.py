@@ -2,6 +2,7 @@ import requests
 import logging
 from requests import Response
 from . import api_key, moderation_url
+from .error import VAError
 
 logging.basicConfig(level = logging.DEBUG)
 
@@ -48,7 +49,7 @@ def __request(message:str) -> Response:
         return response
     except requests.exceptions.HTTPError as err:
         logging.error(err.response)
-        quit(1)
+        raise VAError(err.response)
     except requests.exceptions.RequestException as err:
         logging.debug(err.response)
-        quit(1)
+        raise VAError(err.response)

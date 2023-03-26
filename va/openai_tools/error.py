@@ -23,3 +23,19 @@ class NullResponseError(Exception):
                  message: str = "For the given time, chat-gpt cannot process the given request. Please try again"):
         self.message = message
         super().__init__(self.message)
+
+class FileSizeError(Exception):
+    """
+    Raised when given audio file size is larger than the limit placed by OpenAI (25Mb)
+    """
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+class VAError(Exception):
+    """
+    Raised when the code execution encounters other errors, e.g. OpenAIError, OSError
+    """
+    def __init__(self, cause):
+        self.message = cause
+        super().__init__(self.message)
