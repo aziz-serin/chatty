@@ -12,18 +12,24 @@ class OpenAIAudio(OpenAI):
     Supported audio file formats at the time of writing this code: ['m4a', 'mp3', 'webm', 'mp4', 'mpga', 'wav', 'mpeg']
     """
     byte_limit:int = 26_214_400
+    text:str = "text"
 
     def __init__(self, model:str="whisper-1"):
         super().__init__(model)
 
     def speech_to_text(self, file:str) -> str:
         file = self.__open_file(file)
-        response = self.__send_transcribe_request(file)
-        return response["text"]
+        response = self.__send_request(file, openai.Audio.transcribe)
+        return response[self.text]
 
-    def __send_transcribe_request(self, file):
+    def translate(self, file:str) -> str:
+        file = self.__open_file(file)
+        response = self.__send_request(file, openai.Audio.translate)
+        return response[self.text]
+
+    def __send_request(self, file, function):
         try:
-            return openai.Audio.transcribe(model=self.model, file=file)
+            return function(self.model, file)
         except openai.OpenAIError as err:
             logging.error(err.json_body)
             raise VAError(err.json_body)
