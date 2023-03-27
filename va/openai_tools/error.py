@@ -6,7 +6,6 @@ class InvalidMessageError(Exception):
         self.message = message
         super().__init__(self.message)
 
-
 class TokenLimitError(Exception):
     """
     Raised when a query response runs out of tokens.
