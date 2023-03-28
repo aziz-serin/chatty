@@ -6,6 +6,7 @@ from text_to_speech.talk import Talkie
 from text_to_speech.error import UnsupportedLanguageError
 from gtts import gTTSError
 from configparser import NoSectionError
+from mongo.connection import Connection
 
 logging.basicConfig(level = logging.DEBUG)
 
@@ -16,7 +17,17 @@ absolute once the app is completed
 
 def main():
     config = get_config("resources/config.ini", "personal_information")
-    text_to_speech("Speak this text in english, do a good job", "resources/tts.mp3")
+    config_connection = Connection("localhost", 27017, "config")
+    _id = config_connection.insert_document(config.entries)
+    count = config_connection.count()
+    document = config_connection.get_document_by_id(_id)
+    documents = config_connection.get_all_documents()
+    print(_id)
+    print(count)
+    print(document)
+    print(documents)
+    print("//////////////")
+    print(config_connection.__client__.get_databases())
 
 def get_config(path:str, section:str) -> Config:
     try:
