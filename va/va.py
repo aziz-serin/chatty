@@ -4,7 +4,6 @@ from openai_tools.ai_chat import OpenAIChat
 from openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError, FileSizeError, VAError
 from text_to_speech.talk import Talkie
 from text_to_speech.error import UnsupportedLanguageError
-from gtts import gTTSError
 from configparser import NoSectionError
 from mongo.connection import Connection
 
@@ -17,17 +16,10 @@ absolute once the app is completed
 
 def main():
     config = get_config("resources/config.ini", "personal_information")
-    config_connection = Connection("localhost", 27017, "config")
-    _id = config_connection.insert_document(config.entries)
-    count = config_connection.count()
-    document = config_connection.get_document_by_id(_id)
-    documents = config_connection.get_all_documents()
-    print(_id)
-    print(count)
-    print(document)
-    print(documents)
-    print("//////////////")
-    print(config_connection.__client__.get_databases())
+    #config_connection = Connection("localhost", 27017, "config")
+    talkie = Talkie()
+    talkie.save_sound("Hello world, how is it going?", "resources/tts.wav")
+
 
 def get_config(path:str, section:str) -> Config:
     try:
@@ -61,18 +53,6 @@ def conversation(config: Config):
             break
     print("\n\n\n")
     print(ai.messages)
-
-def text_to_speech(text:str, path:str):
-    talkie = Talkie()
-    try:
-        talkie.save_sound(text, path)
-    except gTTSError as err:
-        logging.error(err.msg)
-        quit(1)
-    except UnsupportedLanguageError as err:
-        logging.error(err.message)
-        quit(1)
-
 
 def speech_to_text(file_path:str, function):
     try:
