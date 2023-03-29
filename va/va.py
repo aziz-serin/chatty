@@ -20,7 +20,6 @@ def main():
     talkie = Talkie()
     talkie.save_sound("Hello world, how is it going?", "resources/tts.wav")
 
-
 def get_config(path:str, section:str) -> Config:
     try:
         return Config(path, section)

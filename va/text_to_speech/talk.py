@@ -1,6 +1,5 @@
 from .error import UnsupportedLanguageError
 from google.cloud import texttospeech as tts
-from google.cloud.texttospeech import SsmlVoiceGender
 import logging
 
 logging.basicConfig(level = logging.DEBUG)
