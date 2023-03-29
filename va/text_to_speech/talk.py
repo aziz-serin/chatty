@@ -8,12 +8,15 @@ logging.basicConfig(level = logging.DEBUG)
 class Talkie:
     supported_locales:set
 
-    def __init__(self, ssml_gender:SsmlVoiceGender=SsmlVoiceGender.NEUTRAL, locale:str="en-GB"):
+    def __init__(self, voice_name:str="en-GB-Neural2-A"):
         self.client = tts.TextToSpeechClient()
-        self.gender = ssml_gender
         self.supported_locales = self.__get_languages__()
+        locale = "-".join(voice_name.split("-")[:2])
         self.__validate_locale(locale)
-        self.locale = locale
+        self.voice_params = tts.VoiceSelectionParams(
+            language_code=locale, name=voice_name
+        )
+        self.audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
 
     def __validate_locale(self, locale:str):
         if locale not in self.supported_locales:
@@ -29,14 +32,11 @@ class Talkie:
 
     def save_sound(self, text:str, filename:str):
         text_input = tts.SynthesisInput(text=text)
-        voice_params = tts.VoiceSelectionParams(
-            language_code = self.locale, ssml_gender=self.gender
-        )
-        audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
+
         response = self.client.synthesize_speech(
             input=text_input,
-            voice=voice_params,
-            audio_config=audio_config
+            voice=self.voice_params,
+            audio_config=self.audio_config
         )
         with open(filename, "wb") as out:
             out.write(response.audio_content)
