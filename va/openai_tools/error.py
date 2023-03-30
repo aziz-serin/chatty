@@ -38,3 +38,11 @@ class VAError(Exception):
     def __init__(self, cause):
         self.message = cause
         super().__init__(self.message)
+
+class OpenAIAPIKeyError(Exception):
+    """
+    Raised when env variable for openai api key is not set.
+    """
+    def __init__(self, cause):
+        self.message = cause
+        super().__init__(self.message)
