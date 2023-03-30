@@ -1,8 +1,9 @@
 import requests
 import logging
 from requests import Response
-from . import api_key, moderation_url
+from . import moderation_url, env_variable_name
 from .error import VAError
+from .ai import get_api_key
 
 logging.basicConfig(level = logging.DEBUG)
 
@@ -38,7 +39,7 @@ def __parse_reasons(categories:dict) -> list:
 def __request(message:str) -> Response:
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
+        "Authorization": f"Bearer {get_api_key(env_variable_name)}"
     }
     data = {
         "input": message
