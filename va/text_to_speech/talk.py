@@ -19,7 +19,9 @@ class Talkie:
 
     def __validate_locale(self, locale:str):
         if locale not in self.supported_locales:
-            raise UnsupportedLanguageError(f"Given locale {locale} is not supported by Google text to speech API!")
+            message = f"Given locale {locale} is not supported by Google text to speech API!"
+            logger.error(message)
+            raise UnsupportedLanguageError(message)
 
     def __get_languages__(self) -> set:
         voices = self.client.list_voices().voices
