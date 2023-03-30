@@ -8,7 +8,7 @@ class Connection:
         self._db = self.__client__.get_database("app")
         self._collection = self._db[self.collection_name]
 
-    def insert_document(self, data:dict):
+    def insert_document(self, data:dict) -> int | None:
         result =  self._collection.insert_one(data)
         if result.acknowledged:
             return result.inserted_id
@@ -20,10 +20,10 @@ class Connection:
             return result.inserted_ids
         return None
 
-    def get_document_by_id(self, _id):
+    def get_document_by_id(self, _id:int) -> dict:
         return self._collection.find_one({"_id": _id})
 
-    def get_all_documents(self):
+    def get_all_documents(self) -> list[dict]:
         documents = []
         for document in self._collection.find():
             documents.append(document)
@@ -32,12 +32,12 @@ class Connection:
     def count(self) -> int:
         return self._collection.count_documents({})
 
-    def update_document(self, _id:int, update:dict):
+    def update_document(self, _id:int, update:dict) -> dict | None:
         query = {"_id": _id}
         data = {"$set": {
             update
         }}
-        self._collection.find_one_and_update(query, data)
+        return self._collection.find_one_and_update(query, data)
 
     def delete_document(self, _id:int):
         query = {"_id": _id}
