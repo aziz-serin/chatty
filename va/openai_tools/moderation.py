@@ -5,7 +5,7 @@ from . import moderation_url, env_variable_name
 from .error import VAError
 from .ai import get_api_key
 
-logging.basicConfig(level = logging.DEBUG)
+logger = logging.getLogger("chatty")
 
 """
 Return a dict which contains 2 keys:
@@ -16,7 +16,7 @@ def isValidPrompt(message:str) -> dict:
     response = __request(message)
     json = response.json()
     flagged = json["results"][0]["flagged"]
-    logging.info(f'\nGiven message: {message} \nFlagged status: {flagged}')
+    logger.info(f'\nGiven message: {message} \nFlagged status: {flagged}')
     categories = json["results"][0]["categories"]
     if not flagged:
         return {
@@ -49,8 +49,8 @@ def __request(message:str) -> Response:
         response.raise_for_status()
         return response
     except requests.exceptions.HTTPError as err:
-        logging.error(err.response)
+        logger.error(err.response)
         raise VAError(err.response)
     except requests.exceptions.RequestException as err:
-        logging.debug(err.response)
+        logger.debug(err.response)
         raise VAError(err.response)

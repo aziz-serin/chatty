@@ -4,7 +4,7 @@ import os
 from .ai import OpenAI
 from .error import FileSizeError, VAError
 
-logging.basicConfig(level = logging.DEBUG)
+logger = logging.getLogger("chatty")
 
 class OpenAIAudio(OpenAI):
     """
@@ -31,15 +31,15 @@ class OpenAIAudio(OpenAI):
         try:
             return function(self.model, file)
         except openai.OpenAIError as err:
-            logging.error(err.json_body)
+            logger.error(err.json_body)
             raise VAError(err.json_body)
 
     def __open_file(self, file:str):
         try:
             self.__validate_size(file)
             return open(file, "rb")
-        except FileSizeError as err:
-            logging.error(err.message)
+        except (FileSizeError, FileNotFoundError) as err:
+            logger.error(err.message)
             raise VAError(err.message)
 
     def __validate_size(self, file:str):
@@ -48,5 +48,5 @@ class OpenAIAudio(OpenAI):
             if size >= self.byte_limit:
                 raise FileSizeError(f"Given file size {size} is larger than the limit {self.byte_limit}")
         except OSError as err:
-            logging.error(err)
+            logger.error(err)
             raise VAError(err)

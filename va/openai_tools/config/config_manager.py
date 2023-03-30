@@ -2,6 +2,8 @@ import configparser
 from configparser import NoSectionError
 import logging
 
+logger = logging.getLogger("chatty")
+
 """
 Has the following instance variables:
     - cnf for configparser instance
@@ -10,9 +12,7 @@ Has the following instance variables:
     - section for the name of the section
 """
 class Config:
-
     def __init__(self, path:str, section:str):
-        logging.basicConfig(level=logging.DEBUG)
         self.cnf = configparser.ConfigParser()
         self.path = path
         self.section = section
@@ -27,7 +27,7 @@ class Config:
     """
     def __file_empty(self) -> bool:
         if (not self.cnf.has_section(self.section)) or len(self.cnf.items()) == 0:
-            logging.debug(f"Config is either empty or missing the given section {self.section}")
+            logger.debug(f"Config is either empty or missing the given section {self.section}")
             return True
         return False
 

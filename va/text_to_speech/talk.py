@@ -2,7 +2,7 @@ from .error import UnsupportedLanguageError
 from google.cloud import texttospeech as tts
 import logging
 
-logging.basicConfig(level = logging.DEBUG)
+logger = logging.getLogger("chatty")
 
 class Talkie:
     supported_locales:set
@@ -39,4 +39,4 @@ class Talkie:
         )
         with open(filename, "wb") as out:
             out.write(response.audio_content)
-            logging.info(f'Generated speech file and saved it to {filename}')
+            logger.info(f'Generated speech file and saved it to {filename}')

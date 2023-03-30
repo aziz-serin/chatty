@@ -4,7 +4,7 @@ from .moderation import isValidPrompt
 from .error import InvalidMessageError, TokenLimitError, NullResponseError, VAError
 from .ai import OpenAI
 
-logging.basicConfig(level = logging.DEBUG)
+logger = logging.getLogger("chatty")
 
 class OpenAIChat(OpenAI):
     """
@@ -85,4 +85,4 @@ class OpenAIChat(OpenAI):
             self.messages = self.initial_messages
 
     def __log_transaction(self, timestamp: str, status: str):
-        logging.info(f'TIMESTAMP: {timestamp}, COUNT: {self.token_count}, RESPONSE_STATUS: {status}')
+        logger.info(f'TIMESTAMP: {timestamp}, COUNT: {self.token_count}, RESPONSE_STATUS: {status}')

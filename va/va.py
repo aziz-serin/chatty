@@ -1,24 +1,32 @@
+"""
+This script is provided to play around with the current implemented features of the application. It will be deleted/made
+absolute once the app is completed
+"""
 import logging
 from openai_tools.config.config_manager import Config
 from openai_tools.ai_chat import OpenAIChat
+from openai_tools.ai_audio import OpenAIAudio
 from openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError, FileSizeError, VAError
 from text_to_speech.talk import Talkie
 from text_to_speech.error import UnsupportedLanguageError
 from configparser import NoSectionError
 from mongo.connection import Connection
 
-logging.basicConfig(level = logging.DEBUG)
-
-"""
-This script is provided to play around with the current implemented features of the application. It will be deleted/made
-absolute once the app is completed
-"""
+# Setup proper logging
+logger = logging.getLogger("chatty")
+logger.setLevel(level = logging.DEBUG)
+handler = logging.StreamHandler()
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 def main():
-    config = get_config("resources/config.ini", "personal_information")
+    config = get_config("resources/config.ini", "personal_information").entries
     #config_connection = Connection("localhost", 27017, "config")
-    talkie = Talkie()
-    talkie.save_sound("Hello world, how is it going?", "resources/tts.wav")
+    # talkie = Talkie()
+    # talkie.save_sound("Hello world, how is it going?", "resources/tts.wav")
+    talkie = OpenAIAudio()
+    print(speech_to_text("resources/turkish.m4a", talkie.speech_to_text))
 
 def get_config(path:str, section:str) -> Config:
     try:
@@ -26,7 +34,7 @@ def get_config(path:str, section:str) -> Config:
     except NoSectionError:
         quit(1)
 
-def chat(message:str, config:Config):
+def chat(message:str, config:dict):
     ai = OpenAIChat(config=config)
     try:
         return ai.send_message(message=message, conversation=False)
@@ -36,7 +44,7 @@ def chat(message:str, config:Config):
     except VAError:
         quit(1)
 
-def conversation(config: Config):
+def conversation(config: dict):
     ai = OpenAIChat(config=config)
     while True:
         prompt = str(input(": "))
