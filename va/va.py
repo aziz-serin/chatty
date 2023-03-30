@@ -26,7 +26,7 @@ def main():
     # talkie = Talkie()
     # talkie.save_sound("Hello world, how is it going?", "resources/tts.wav")
     talkie = OpenAIAudio()
-    print(speech_to_text("resources/turkish.m4a", talkie.speech_to_text))
+    print(speech_to_text("resources/turkish.m4a", talkie.transcribe))
 
 def get_config(path:str, section:str) -> Config:
     try:

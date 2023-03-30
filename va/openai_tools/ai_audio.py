@@ -17,7 +17,7 @@ class OpenAIAudio(OpenAI):
     def __init__(self, model:str="whisper-1"):
         super().__init__(model)
 
-    def speech_to_text(self, file:str) -> str:
+    def transcribe(self, file:str) -> str:
         file = self.__open_file(file)
         response = self.__send_request(file, openai.Audio.transcribe)
         return response[self.text]
