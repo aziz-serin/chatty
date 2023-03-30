@@ -1,6 +1,5 @@
 import openai
 import logging
-from .config.config_manager import Config
 from .moderation import isValidPrompt
 from .error import InvalidMessageError, TokenLimitError, NullResponseError, VAError
 from .ai import OpenAI
@@ -17,7 +16,7 @@ class OpenAIChat(OpenAI):
     user:str = "user"
     assistant:str = "assistant"
 
-    def __init__(self, config: Config, system_config: str = "You are a virtual assistant.",
+    def __init__(self, config: dict, system_config: str = "You are a virtual assistant.",
                  model: str = "gpt-3.5-turbo"):
         super().__init__(model)
         self.system_config = system_config
@@ -29,7 +28,7 @@ class OpenAIChat(OpenAI):
     def __init_messages_with_config(self):
         self.messages = []
         system_message = self.system_config
-        for key, value in self.config.entries.items():
+        for key, value in self.config.items():
             message = f' {key}={value}'
             system_message = system_message + message
         self.messages.append(
