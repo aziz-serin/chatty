@@ -46,5 +46,13 @@ class App:
             logger.debug(err)
             return None
 
-    def add_config(self, key:str, value:str):
-        self.__app__[key] = value
+    def add_config(self, key, value):
+        self.__app__.config[key] = value
+
+    def remove_config(self, key):
+        try:
+            return self.__app__.config.pop(key)
+        except KeyError as err:
+            logger.debug(err)
+            return None
+
