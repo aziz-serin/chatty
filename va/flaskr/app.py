@@ -23,7 +23,7 @@ class App:
             raise AppConstructionError(err)
         try:
             app = Flask(__name__)
-            self.app = app
+            self.__app__ = app
         except OSError as err:  # thrown if the defined port is already is in use:
             logger.error(err)
             raise AppConstructionError(err)
@@ -32,9 +32,19 @@ class App:
         try:
             connection = Connection(db_host, db_port, connection_name)
             self.most_recent_id += 1
-            self.connections.update({self.most_recent_id: connection})
+            self.connections[self.most_recent_id] = connection
             return connection
 
         except (ConfigurationError, ConnectionFailure) as err:
             logger.error(err)
             raise ConnectionConstructionError(err)
+
+    def remove_connection(self, connection_id:int) -> Connection | None:
+        try:
+            return self.connections.pop(connection_id)
+        except KeyError as err:
+            logger.debug(err)
+            return None
+
+    def add_config(self, key:str, value:str):
+        self.__app__[key] = value
