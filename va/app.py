@@ -1,13 +1,12 @@
 from flask import Flask
-from va.mongo.connection import Connection
 from pymongo.errors import ConfigurationError, ConnectionFailure
-from .error import AppConstructionError, ConnectionConstructionError
+from error import AppConstructionError, ConnectionConstructionError
+from mongo.connection import Connection
 import logging
 
 logger = logging.getLogger("chatty")
 
 class App:
-
     def __init__(self, db_host:str, db_port:int):
         # create and configure the app and the db connections
         try:
@@ -55,4 +54,3 @@ class App:
         except KeyError as err:
             logger.debug(err)
             return None
-
