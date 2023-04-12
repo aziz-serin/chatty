@@ -1,6 +1,6 @@
-class AppConstructionError(Exception):
+class ContextConstructionError(Exception):
     """
-    Raised when construction of the flask app is failed
+    Raised when construction of the app context is failed
     """
     def __init__(self, message):
         self.message = message
@@ -8,7 +8,7 @@ class AppConstructionError(Exception):
 
 class ConnectionConstructionError(Exception):
     """
-    Raised when construction of the flask app is failed
+    Raised when construction of the connection is failed
     """
     def __init__(self, message):
         self.message = message

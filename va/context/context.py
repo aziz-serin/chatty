@@ -1,12 +1,11 @@
-from flask import Flask
 from pymongo.errors import ConfigurationError, ConnectionFailure
-from error import AppConstructionError, ConnectionConstructionError
-from mongo.connection import Connection
+from .error import ContextConstructionError, ConnectionConstructionError
+from va.mongo.connection import Connection
 import logging
 
 logger = logging.getLogger("chatty")
 
-class App:
+class Context:
     def __init__(self, db_host:str, db_port:int):
         # create and configure the app and the db connections
         try:
@@ -19,13 +18,7 @@ class App:
             }
         except (ConfigurationError, ConnectionFailure) as err:
             logger.error(err)
-            raise AppConstructionError(err)
-        try:
-            app = Flask(__name__)
-            self.__app__ = app
-        except OSError as err:  # thrown if the defined port is already is in use:
-            logger.error(err)
-            raise AppConstructionError(err)
+            raise ContextConstructionError(err)
 
     def create_connection(self, db_host:str, connection_name:str, db_port:int) -> Connection:
         try:
@@ -41,16 +34,6 @@ class App:
     def remove_connection(self, connection_id:int) -> Connection | None:
         try:
             return self.connections.pop(connection_id)
-        except KeyError as err:
-            logger.debug(err)
-            return None
-
-    def add_config(self, key, value):
-        self.__app__.config[key] = value
-
-    def remove_config(self, key):
-        try:
-            return self.__app__.config.pop(key)
         except KeyError as err:
             logger.debug(err)
             return None
