@@ -1,5 +1,5 @@
 from app import App
-from openai_controller.chat_controller import openai
+from controllers.chat_controller import openai
 
 app = App(db_host="localhost", db_port=27017)
 
