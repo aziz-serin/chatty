@@ -3,6 +3,7 @@ import logging
 from .moderation import isValidPrompt
 from .error import InvalidMessageError, TokenLimitError, NullResponseError, VAError
 from .ai import OpenAI
+from .util import get_token_count
 
 logger = logging.getLogger("chatty")
 
@@ -17,12 +18,15 @@ class OpenAIChat(OpenAI):
     assistant:str = "assistant"
 
     def __init__(self, config: dict, system_config: str = "You are a virtual assistant.",
-                 model: str = "gpt-3.5-turbo"):
+                 model: str = "gpt-3.5-turbo", token_limit:int = 4000, initial_messages:list[dict]=None):
         super().__init__(model)
+        self.token_limit = token_limit
         self.system_config = system_config
         self.config = config
-        self.token_count=0
-        self.__init_messages_with_config()
+        if initial_messages is None:
+            self.__init_messages_with_config()
+        else:
+            self.messages = initial_messages
         self.initial_messages = self.messages
 
     def __init_messages_with_config(self):
@@ -41,11 +45,15 @@ class OpenAIChat(OpenAI):
             reasons = ', '.join(map(str, response["reasons"]))
             raise InvalidMessageError(reasons)
 
+    def __validate_token_count(self):
+        if self.get_current_token_count() >= self.token_limit:
+            raise TokenLimitError(f"{self.get_current_token_count()} is above the token limit for given model {self.model}")
+
     def __handle_reason(self, reason:str):
         if reason == "stop":
             return
         elif reason == "length":
-            raise TokenLimitError(f"{str(self.token_count)} is above the token limit for given model {self.model}")
+            raise TokenLimitError(f"{self.get_current_token_count()} is above the token limit for given model {self.model}")
         elif reason == "content_filter":
             raise InvalidMessageError("Invalid message was detected by chatgpt")
         elif reason == "null":
@@ -56,14 +64,17 @@ class OpenAIChat(OpenAI):
         self.messages.append(
             {self.role: self.user, self.content: message}
         )
+        self.__validate_token_count()
         response = self.__send_request()
         finish_reason = response['choices'][0]['finish_reason']
-        self.token_count = int(response["usage"]["total_tokens"])
         self.__handle_reason(finish_reason)
         self.__log_transaction(str(response["created"]), finish_reason)
         reply = response['choices'][0]['message']['content']
         self.__handle_reply(reply, conversation)
         return reply
+
+    def get_current_token_count(self):
+        return get_token_count(self.messages, self.model)
 
     def __send_request(self):
         try:
