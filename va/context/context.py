@@ -1,39 +1,27 @@
-from pymongo.errors import ConfigurationError, ConnectionFailure
-from .error import ContextConstructionError, ConnectionConstructionError
-from va.mongo.connection import Connection
-import logging
-
-logger = logging.getLogger("chatty")
+import json
 
 class Context:
-    def __init__(self, db_host:str, db_port:int):
-        # create and configure the app and the db connections
-        try:
-            config_connection = Connection(db_host, db_port, "config")
-            message_connection = Connection(db_host, db_port, "message")
-            self.most_recent_id = 2
-            self.connections = {
-                0: config_connection,
-                1: message_connection
-            }
-        except (ConfigurationError, ConnectionFailure) as err:
-            logger.error(err)
-            raise ContextConstructionError(err)
 
-    def create_connection(self, db_host:str, connection_name:str, db_port:int) -> Connection:
-        try:
-            connection = Connection(db_host, db_port, connection_name)
-            self.most_recent_id += 1
-            self.connections[self.most_recent_id] = connection
-            return connection
+    def __init__(self, config:dict, chat_model:str, stt_model:str, token_limit:int, messages:list[dict]):
+        self.config = config
+        self.chat_model = chat_model
+        self.stt_model = stt_model
+        self.token_limit = token_limit
+        self.messages = messages
 
-        except (ConfigurationError, ConnectionFailure) as err:
-            logger.error(err)
-            raise ConnectionConstructionError(err)
+    def jsonify(self) -> json:
+        json_obj = {
+            "config": self.config,
+            "chat_model": self.chat_model,
+            "stt_model": self.stt_model,
+            "token_limit": self.token_limit,
+            "messages": self.messages
+        }
+        return json.dump(json_obj)
 
-    def remove_connection(self, connection_id:int) -> Connection | None:
-        try:
-            return self.connections.pop(connection_id)
-        except KeyError as err:
-            logger.debug(err)
-            return None
+    def load_from_json(self, obj:json):
+        self.config = obj["config"]
+        self.chat_model = obj["chat_model"]
+        self.stt_model = obj["stt_model"]
+        self.token_limit = obj["token_limit"]
+        self.messages = ["messages"]
