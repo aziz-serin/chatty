@@ -6,12 +6,9 @@ from controllers.config_controller import config
 app = Flask("chatty")
 
 def init():
-    openai_config = Config("resources/config.ini", "system")
-    flask_config = Config("resources/config.ini", "flask")
-    mongo_config = Config("resources/config.ini", "mongo")
-    app.config["system"] = openai_config.entries
-    app.config["mongo"] = mongo_config.entries
-    app.config["flask"] = flask_config.entries
+    app.config["system"] = Config("resources/config.ini", "system").entries
+    app.config["mongo"] = Config("resources/config.ini", "flask").entries
+    app.config["flask"] = Config("resources/config.ini", "mongo").entries
 
 def register():
     app.register_blueprint(chat)
@@ -23,4 +20,4 @@ def main():
 if __name__ == "__main__":
     init()
     register()
-
+    main()
