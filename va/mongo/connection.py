@@ -5,10 +5,10 @@ logger = logging.getLogger("chatty")
 
 class Connection:
 
-    def __init__(self, db_host:str, port:int, collection_name:str):
-        self.__client__ = DB(db_host, port)
+    def __init__(self, db_host:str, port:int, collection_name:str, username:str, password:str):
+        self.__client__ = DB(db_host, port, username, password)
         self.collection_name = collection_name
-        self._db = self.__client__.get_database("app")
+        self._db = self.__client__.get_database("chatty")
         self._collection = self._db[self.collection_name]
 
     def insert_document(self, data:dict) -> int | None:

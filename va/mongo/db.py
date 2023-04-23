@@ -1,8 +1,8 @@
 import pymongo
 
 class DB:
-    def __init__(self, db_host:str, db_port:int):
-        self._client = pymongo.MongoClient(host=db_host, port=db_port)
+    def __init__(self, db_host:str, db_port:int, username:str, password:str):
+        self._client = pymongo.MongoClient(host=db_host, port=db_port, username=username, password=password)
 
     def get_database(self, db:str):
         return self._client[db]
