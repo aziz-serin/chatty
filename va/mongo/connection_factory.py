@@ -1,4 +1,4 @@
-from connection import Connection
+from .connection import Connection
 import logging
 from pymongo.errors import PyMongoError
 

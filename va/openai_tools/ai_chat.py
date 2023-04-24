@@ -96,4 +96,4 @@ class OpenAIChat(OpenAI):
             self.messages = self.initial_messages
 
     def __log_transaction(self, timestamp: str, status: str):
-        logger.info(f'TIMESTAMP: {timestamp}, COUNT: {self.token_count}, RESPONSE_STATUS: {status}')
+        logger.info(f'TIMESTAMP: {timestamp}, COUNT: {self.get_current_token_count()}, RESPONSE_STATUS: {status}')
