@@ -1,9 +1,12 @@
 from va.mongo.connection_factory import ConnectionFactory
-import flask
+from va.flaskr import app
+from flask import current_app
 
-mongo_host = flask.current_app.config["mongo"]["host"]
-mongo_port = flask.current_app.config["mongo"]["port"]
-username = flask.current_app.config["mongo"]["username"]
-password = flask.current_app.config["mongo"]["password"]
+with app.app_context():
+    mongo_config = current_app.config["mongo"]
+    system_config = current_app.config["system"]
 
-factory = ConnectionFactory(mongo_host, mongo_port, username, password)
+    factory = ConnectionFactory(mongo_config["host"],
+                                mongo_config["port"],
+                                mongo_config["username"],
+                                mongo_config["password"])
