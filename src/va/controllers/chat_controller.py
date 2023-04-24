@@ -1,7 +1,7 @@
 from flask import Blueprint, request, json, Response
-from va.openai_tools.ai_chat import OpenAIChat
-from . import factory, system_config
-from va.openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError, VAError, OpenAIAPIKeyError
+from src.va.openai_tools.ai_chat import OpenAIChat
+from . import system_config
+from src.va.openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError, VAError, OpenAIAPIKeyError
 
 ai_chat = Blueprint('openai', "chatty")
 

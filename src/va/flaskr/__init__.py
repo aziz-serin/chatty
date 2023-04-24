@@ -1,5 +1,5 @@
 from flask import Flask
-from va.openai_tools.config.config_manager import Config
+from src.va.openai_tools.config.config_manager import Config
 
 app = Flask("chatty")
 
@@ -10,7 +10,7 @@ def init():
     app.config["flask"] = Config("resources/config.ini", "flask").entries
 
 def register():
-    from va.controllers.chat_controller import ai_chat
+    from src.va.controllers.chat_controller import ai_chat
     app.register_blueprint(ai_chat)
-    from va.controllers.config_controller import config
+    from src.va.controllers.config_controller import config
     app.register_blueprint(config)

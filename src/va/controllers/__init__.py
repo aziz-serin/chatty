@@ -1,5 +1,5 @@
-from va.mongo.connection_factory import ConnectionFactory
-from va.flaskr import app
+from src.va.mongo.connection_factory import ConnectionFactory
+from src.va.flaskr import app
 from flask import current_app
 
 with app.app_context():

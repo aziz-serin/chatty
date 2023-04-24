@@ -1,4 +1,4 @@
-from va.flaskr import init, register, app
+from src.va.flaskr import init, register, app
 
 def main():
     init()
