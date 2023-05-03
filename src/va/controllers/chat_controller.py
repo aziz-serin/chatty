@@ -53,6 +53,7 @@ def chat():
             mimetype='application/json'
         )
     except (InvalidMessageError | TokenLimitError) as err:
+        logger.debug(err)
         return Response(
             response=json.dumps({
                 "reason": "Invalid/Bad Request"
@@ -60,7 +61,8 @@ def chat():
             status=400,
             mimetype='application/json'
         )
-    except (OpenAIAPIKeyError | NullResponseError, VAError):
+    except (OpenAIAPIKeyError | NullResponseError, VAError) as err:
+        logger.debug(err)
         return Response(
             response=json.dumps({
                 "reason": "Internal Server Error"
@@ -73,6 +75,7 @@ def chat():
 def conversation():
     connection = factory.get_context_connection()
     if connection is None:
+        logger.debug("Could not establish connection with database")
         return Response(
             response=json.dumps({
                 "reason": "Internal Server Error"
@@ -139,6 +142,7 @@ def conversation():
             mimetype='application/json'
         )
     except (InvalidMessageError | TokenLimitError) as err:
+        logger.debug(err)
         return Response(
             response=json.dumps({
                 "reason": "Invalid/Bad Request"
@@ -146,7 +150,8 @@ def conversation():
             status=400,
             mimetype='application/json'
         )
-    except (OpenAIAPIKeyError | NullResponseError, VAError):
+    except (OpenAIAPIKeyError | NullResponseError, VAError) as err:
+        logger.debug(err)
         return Response(
             response=json.dumps({
                 "reason": "Internal Server Error"
