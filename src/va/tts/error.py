@@ -1,4 +1,4 @@
-class UnsupportedLanguageError(BaseException):
+class UnsupportedLanguageError(Exception):
     """
     Raised when a specified language does not exist.
     """

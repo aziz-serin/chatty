@@ -1,4 +1,4 @@
-class InvalidMessageError(BaseException):
+class InvalidMessageError(Exception):
     """
     Raised when a given message for chat-gpt request violates OpenAI's policy.
     """
@@ -6,7 +6,7 @@ class InvalidMessageError(BaseException):
         self.message = message
         super().__init__(self.message)
 
-class TokenLimitError(BaseException):
+class TokenLimitError(Exception):
     """
     Raised when a query response runs out of tokens.
     """
@@ -14,7 +14,7 @@ class TokenLimitError(BaseException):
         self.message = message
         super().__init__(self.message)
 
-class NullResponseError(BaseException):
+class NullResponseError(Exception):
     """
     Raised when a query response is null.
     """
@@ -23,7 +23,7 @@ class NullResponseError(BaseException):
         self.message = message
         super().__init__(self.message)
 
-class FileSizeError(BaseException):
+class FileSizeError(Exception):
     """
     Raised when given audio file size is larger than the limit placed by OpenAI (25Mb)
     """
@@ -31,7 +31,7 @@ class FileSizeError(BaseException):
         self.message = message
         super().__init__(self.message)
 
-class VAError(BaseException):
+class VAError(Exception):
     """
     Raised when the code execution encounters other errors, e.g. OpenAIError, OSError
     """
@@ -39,7 +39,7 @@ class VAError(BaseException):
         self.message = cause
         super().__init__(self.message)
 
-class OpenAIAPIKeyError(BaseException):
+class OpenAIAPIKeyError(Exception):
     """
     Raised when env variable for openai api key is not set.
     """
