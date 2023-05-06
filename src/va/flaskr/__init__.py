@@ -12,5 +12,5 @@ def init():
 def register():
     from src.va.controllers.chat_controller import ai_chat
     app.register_blueprint(ai_chat)
-    from src.va.controllers.config_controller import config
-    app.register_blueprint(config)
+    from src.va.controllers.context_controller import context
+    app.register_blueprint(context)
