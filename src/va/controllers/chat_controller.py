@@ -17,7 +17,7 @@ chat_default_context = Context(
 )
 
 @ai_chat.route("/chat", methods=['POST'])
-def chat():
+def chat() -> Response:
     content = request.get_json()
     try:
         prompt = content["prompt"]
@@ -73,7 +73,7 @@ def chat():
         )
 
 @ai_chat.route("/conversation", methods=['POST'])
-def conversation():
+def conversation() -> Response:
     connection = factory.get_context_connection()
     if connection is None:
         logger.debug("Could not establish connection with database")

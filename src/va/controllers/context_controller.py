@@ -1,5 +1,7 @@
 from flask import Blueprint,request, json, Response
 from . import factory
+from src.va.context.context import Context
+from pymongo.errors import PyMongoError
 import logging
 
 context = Blueprint('context', "chatty")
@@ -17,8 +19,63 @@ def context_endpoint():
     else:
         response = __handle_delete(context_id)
     return response
+
+#TODO implement validate messages function (mainly for the key validation so openai api is happy)
+
 def __handle_post() -> Response:
-    pass
+    content = request.get_json()
+    messages = []
+    default = "false"
+    try:
+        chat_model = content["chat_model"]
+        config = content["config"]
+        stt_model = content["stt_model"]
+        token_limit = int(content["token_limit"])
+    except KeyError as err:
+        logger.debug(err)
+        return Response(
+            response=json.dumps({
+                "reason": "Invalid/Bad Request"
+            }),
+            status=400,
+            mimetype='application/json'
+        )
+    try:
+        messages = content["messages"]
+    except KeyError:
+        pass
+
+    try:
+        default = content["default"]
+    except KeyError:
+        pass
+    context_obj = Context(
+        config=config,
+        chat_model=chat_model,
+        stt_model=stt_model,
+        token_limit=token_limit,
+        messages=messages,
+        default=(default)
+    )
+    context_connection = factory.get_context_connection()
+    try:
+        context_id = context_connection.insert_document(context_obj.jsonify())
+    except PyMongoError as err:
+        logger.debug(err)
+        return Response(
+            response=json.dumps({
+                "reason": "Internal Server Error"
+            }),
+            status=500,
+            mimetype='application/json'
+        )
+    return Response(
+        response=json.dumps({
+            "context_id": str(context_id)
+        }),
+        status=201,
+        mimetype='application/json'
+    )
 
 def __handle_get(context_id:str = None) -> Response:
     if context_id is None:
