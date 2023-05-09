@@ -1,7 +1,7 @@
 # TODO implement a cache for context at app startup as it will be read a lot
 class Context:
     def __init__(self, config:dict = None, chat_model:str = None, stt_model:str = None, token_limit:int = None,
-                 messages:list[dict] = None, default:bool = True):
+                 messages:list[dict] = None, default:bool = False):
         self.config = config
         self.chat_model = chat_model
         self.stt_model = stt_model

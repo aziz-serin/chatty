@@ -13,6 +13,7 @@ chat_default_context = Context(
     config={},
     chat_model="gpt-3.5-turbo",
     token_limit= 4000,
+    default=True
 )
 
 @ai_chat.route("/chat", methods=['POST'])
