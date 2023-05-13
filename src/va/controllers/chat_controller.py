@@ -7,8 +7,8 @@ chat_service = ChatService()
 
 @ai_chat.route("/chat", methods=['POST'])
 def chat() -> Response:
-    return chat_service.chat(request=request)
+    return chat_service.chat(content=dict(request.get_json()))
 
 @ai_chat.route("/conversation", methods=['POST'])
 def conversation() -> Response:
-    return chat_service.conversation(request=request)
+    return chat_service.conversation(dict(request.get_json()))

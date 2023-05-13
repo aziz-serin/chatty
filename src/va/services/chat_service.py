@@ -1,14 +1,15 @@
-from flask import json, Response, Request
+from flask import json, Response
 from src.va.openai_tools.ai_chat import OpenAIChat
 from src.va.context.context import Context
-from . import system_config, factory
+from src.va.openai_tools.error import InvalidMessageError, TokenLimitError, \
+    NullResponseError, VAError, OpenAIAPIKeyError
+from .service import Service
 import logging
-from src.va.openai_tools.error import InvalidMessageError, TokenLimitError, NullResponseError, VAError, OpenAIAPIKeyError
 
-logger = logging.getLogger("chatty")
-
-class ChatService:
+class ChatService(Service):
     def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger("chatty")
         self.default_context = Context(
             config={},
             chat_model="gpt-3.5-turbo",
@@ -16,14 +17,13 @@ class ChatService:
             default=True
         )
 
-    def chat(self, request:Request) -> Response:
-        content = request.get_json()
+    def chat(self, content:dict) -> Response:
         try:
             prompt = content["prompt"]
             model = content["model"]
             token_limit = content["token_limit"]
         except KeyError as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -33,7 +33,7 @@ class ChatService:
             )
         openai_chat = OpenAIChat(
             model=model,
-            config=system_config,
+            config=self.system_config,
             token_limit=token_limit
         )
         try:
@@ -53,7 +53,7 @@ class ChatService:
                 mimetype='application/json'
             )
         except (InvalidMessageError | TokenLimitError) as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -62,7 +62,7 @@ class ChatService:
                 mimetype='application/json'
             )
         except (OpenAIAPIKeyError | NullResponseError, VAError) as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Internal Server Error"
@@ -71,10 +71,10 @@ class ChatService:
                 mimetype='application/json'
             )
 
-    def conversation(self, request:Request) -> Response:
-        connection = factory.get_context_connection()
+    def conversation(self, content:dict) -> Response:
+        connection = self.factory.get_context_connection()
         if connection is None:
-            logger.debug("Could not establish connection with database")
+            self.logger.debug("Could not establish connection with database")
             return Response(
                 response=json.dumps({
                     "reason": "Internal Server Error"
@@ -82,11 +82,10 @@ class ChatService:
                 status=500,
                 mimetype='application/json'
             )
-        content = request.get_json()
         try:
             prompt = content["prompt"]
         except KeyError as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -141,7 +140,7 @@ class ChatService:
                 mimetype='application/json'
             )
         except (InvalidMessageError | TokenLimitError) as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -150,7 +149,7 @@ class ChatService:
                 mimetype='application/json'
             )
         except (OpenAIAPIKeyError | NullResponseError, VAError) as err:
-            logger.debug(err)
+            self.logger.debug(err)
             return Response(
                 response=json.dumps({
                     "reason": "Internal Server Error"
