@@ -73,8 +73,17 @@ class OpenAIChat(OpenAI):
         self.__handle_reply(reply, conversation)
         return reply
 
-    def get_current_token_count(self):
-        return get_token_count(self.messages, self.model)
+    """
+    If conversation, leave the reply as None since the messages will contain the reply, if not, include the reply
+    when asking for the token count
+    """
+    def get_current_token_count(self, reply:str = None):
+        messages = self.messages
+        if reply is not None:
+            messages.append(
+                {self.role: self.assistant, self.content: reply}
+            )
+        return get_token_count(messages, self.model)
 
     def __send_request(self):
         try:
