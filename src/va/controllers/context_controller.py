@@ -1,5 +1,3 @@
-from typing import Any
-
 from flask import Blueprint,request, json, Response
 from . import factory
 from src.va.context.context import Context
@@ -20,7 +18,7 @@ def context_endpoint():
     elif request.method == 'GET':
         response = __handle_get(context_id)
     elif request.method == 'PUT':
-        response = __handle_put()
+        response = __handle_put(context_id)
     else:
         response = __handle_delete(context_id)
     return response
@@ -46,7 +44,7 @@ def __handle_post() -> Response:
 
     try:
         messages = content["messages"]
-        validate_keys(messages)
+        validate_openai_keys(messages)
     except KeyError:
         pass
     except InvalidKeyError as err:
@@ -121,8 +119,53 @@ def __handle_get(context_id:str = None) -> Response:
             mimetype='application/json'
         )
 
-def __handle_put() -> Response:
-    pass
+def __handle_put(context_id:str = None) -> Response:
+    content = dict(request.get_json())
+    if context_id is None:
+        return Response(
+            response=json.dumps({
+                "reason": "Invalid/Bad Request"
+            }),
+            status=400,
+            mimetype='application/json'
+        )
+    try:
+        validate_context_fields(list(content.keys()))
+    except InvalidKeyError as err:
+        logger.debug(err)
+        return Response(
+            response=json.dumps({
+                "reason": "Invalid/Bad Request"
+            }),
+            status=400,
+            mimetype='application/json'
+        )
+    if "messages" in content.keys():
+        try:
+            validate_openai_keys(content["messages"])
+        except InvalidKeyError as err:
+            logger.debug(err)
+            return Response(
+                response=json.dumps({
+                    "reason": "Invalid/Bad Request"
+                }),
+                status=400,
+                mimetype='application/json'
+            )
+    response = __handle_get(context_id)
+    if response.status_code != 200:
+        return response
+    context_json = dict(response.json)
+    del context_json["_id"]
+    for key in content:
+        context_json[key] = content[key]
+    connection = factory.get_context_connection()
+    connection.update_document(_id=context_id, update=context_json)
+    return Response(
+        response=json.dumps({}),
+        status=204,
+        mimetype='application/json'
+    )
 
 def __handle_delete(context_id:str = None) -> Response:
     if context_id is None:
@@ -151,9 +194,15 @@ def __handle_delete(context_id:str = None) -> Response:
             mimetype='application/json'
         )
 
-def validate_keys(messages:list[dict]):
+def validate_openai_keys(messages:list[dict]):
     valid_keys = [OpenAIChat.role, OpenAIChat.content, OpenAIChat.system, OpenAIChat.user, OpenAIChat.assistant]
     for message in messages:
         check = all(item in valid_keys for item in list(message.keys()))
         if not check:
             raise InvalidKeyError("Some keys are not supported by openai APIs")
+
+def validate_context_fields(key_list:list):
+    context_fields = ["config", "chat_model", "stt_model", "token_limit", "messages", "default"]
+    check = all(item in context_fields for item in key_list)
+    if not check:
+        raise InvalidKeyError("Some keys are not supported by context object")
