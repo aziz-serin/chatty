@@ -1,5 +1,8 @@
 from flask import Flask
 from src.va.openai_tools.config.config_manager import Config
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s")
 
 app = Flask("chatty")
 
