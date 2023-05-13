@@ -68,8 +68,11 @@ class OpenAIChat(OpenAI):
         response = self.__send_request()
         finish_reason = response['choices'][0]['finish_reason']
         self.__handle_reason(finish_reason)
-        self.__log_transaction(str(response["created"]), finish_reason)
         reply = response['choices'][0]['message']['content']
+        if not conversation:
+            self.__log_transaction(finish_reason, reply=reply)
+        else:
+            self.__log_transaction(finish_reason)
         self.__handle_reply(reply, conversation)
         return reply
 
@@ -78,7 +81,7 @@ class OpenAIChat(OpenAI):
     when asking for the token count
     """
     def get_current_token_count(self, reply:str = None):
-        messages = self.messages
+        messages = self.messages.copy()
         if reply is not None:
             messages.append(
                 {self.role: self.assistant, self.content: reply}
@@ -104,5 +107,6 @@ class OpenAIChat(OpenAI):
             # Roll back the messages into the initial stage with only the config message
             self.messages = self.initial_messages
 
-    def __log_transaction(self, timestamp: str, status: str):
-        logger.info(f'TIMESTAMP: {timestamp}, COUNT: {self.get_current_token_count()}, RESPONSE_STATUS: {status}')
+    def __log_transaction(self, status: str, reply: str = None):
+        logger.info(f' COUNT: {self.get_current_token_count(reply=reply)},'
+                    f' RESPONSE_STATUS: {status}')
