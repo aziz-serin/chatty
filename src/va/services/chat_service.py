@@ -157,3 +157,12 @@ class ChatService(Service):
                 status=500,
                 mimetype='application/json'
             )
+
+    def get_all_contexts(self) -> Response:
+        context_connection = self.factory.get_context_connection()
+        contexts = context_connection.get_all_documents()
+        return Response(
+            response=json.dumps(contexts),
+            status=200,
+            mimetype='application/json'
+        )

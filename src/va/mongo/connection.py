@@ -37,6 +37,7 @@ class Connection:
     def get_all_documents(self) -> list[dict]:
         documents = []
         for document in self._collection.find():
+            document["_id"] = str(document["_id"])
             documents.append(document)
         logger.info('Queried all documents')
         return documents

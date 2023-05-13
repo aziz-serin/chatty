@@ -2,7 +2,6 @@ from flask import json, Response
 from src.va.context.context import Context
 from pymongo.errors import PyMongoError
 from .error import InvalidKeyError
-from .helpers import validate_openai_message_keys, validate_context_fields
 from .service import Service
 import logging
 
@@ -32,7 +31,7 @@ class ContextService(Service):
 
         try:
             messages = content["messages"]
-            validate_openai_message_keys(messages)
+            self.validate_openai_message_keys(messages)
         except KeyError:
             pass
         except InvalidKeyError as err:
@@ -116,7 +115,7 @@ class ContextService(Service):
                 mimetype='application/json'
             )
         try:
-            validate_context_fields(list(content.keys()))
+            self.validate_context_fields(list(content.keys()))
         except InvalidKeyError as err:
             self.logger.debug(err)
             return Response(
@@ -128,7 +127,7 @@ class ContextService(Service):
             )
         if "messages" in content.keys():
             try:
-                validate_openai_message_keys(content["messages"])
+                self.validate_openai_message_keys(content["messages"])
             except InvalidKeyError as err:
                 self.logger.debug(err)
                 return Response(
@@ -179,3 +178,12 @@ class ContextService(Service):
                 status=404,
                 mimetype='application/json'
             )
+
+    def get_all_contexts(self):
+        context_connection = self.factory.get_context_connection()
+        contexts = context_connection.get_all_documents()
+        return Response(
+            response=json.dumps(contexts),
+            status=200,
+            mimetype='application/json'
+        )
