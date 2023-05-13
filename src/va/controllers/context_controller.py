@@ -1,8 +1,13 @@
+from typing import Any
+
 from flask import Blueprint,request, json, Response
 from . import factory
 from src.va.context.context import Context
 from pymongo.errors import PyMongoError
+from .error import InvalidKeyError
 import logging
+
+from ..openai_tools.ai_chat import OpenAIChat
 
 context = Blueprint('context', "chatty")
 logger = logging.getLogger("chatty")
@@ -19,8 +24,6 @@ def context_endpoint():
     else:
         response = __handle_delete(context_id)
     return response
-
-#TODO implement validate messages function (mainly for the key validation so openai api is happy)
 
 def __handle_post() -> Response:
     content = request.get_json()
@@ -40,10 +43,21 @@ def __handle_post() -> Response:
             status=400,
             mimetype='application/json'
         )
+
     try:
         messages = content["messages"]
+        validate_keys(messages)
     except KeyError:
         pass
+    except InvalidKeyError as err:
+        logger.debug(err)
+        return Response(
+            response=json.dumps({
+                "reason": "Invalid/Bad Request"
+            }),
+            status=400,
+            mimetype='application/json'
+        )
 
     try:
         default = content["default"]
@@ -137,3 +151,9 @@ def __handle_delete(context_id:str = None) -> Response:
             mimetype='application/json'
         )
 
+def validate_keys(messages:list[dict]):
+    valid_keys = [OpenAIChat.role, OpenAIChat.content, OpenAIChat.system, OpenAIChat.user, OpenAIChat.assistant]
+    for message in messages:
+        check = all(item in valid_keys for item in list(message.keys()))
+        if not check:
+            raise InvalidKeyError("Some keys are not supported by openai APIs")
