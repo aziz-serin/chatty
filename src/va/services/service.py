@@ -9,6 +9,7 @@ class Service:
         with app.app_context():
             self.mongo_config = current_app.config["mongo"]
             self.system_config = current_app.config["system"]
+            self.filepath = current_app.config["UPLOAD_FOLDER"]
             self.factory = ConnectionFactory(self.mongo_config["host"],
                                         int(self.mongo_config["port"]),
                                         self.mongo_config["username"],
