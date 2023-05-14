@@ -16,7 +16,7 @@ class Service:
                                         self.mongo_config["password"])
 
     def validate_openai_message_keys(self, messages: list[dict]):
-        valid_keys = [OpenAIChat.role, OpenAIChat.content, OpenAIChat.system, OpenAIChat.user, OpenAIChat.assistant]
+        valid_keys = [OpenAIChat.ROLE, OpenAIChat.CONTENT, OpenAIChat.SYSTEM, OpenAIChat.USER, OpenAIChat.ASSISTANT]
         for message in messages:
             check = all(item in valid_keys for item in list(message.keys()))
             if not check:

@@ -11,11 +11,11 @@ class OpenAIChat(OpenAI):
     """
     Default dict keys for openai at the time of writing this code
     """
-    role:str = "role"
-    content:str = "content"
-    system:str = "system"
-    user:str = "user"
-    assistant:str = "assistant"
+    ROLE:str = "role"
+    CONTENT:str = "content"
+    SYSTEM:str = "system"
+    USER:str = "user"
+    ASSISTANT:str = "assistant"
 
     def __init__(self, config: dict, system_config: str = "You are a virtual assistant.",
                  model: str = "gpt-3.5-turbo", token_limit:int = 4000, initial_messages:list[dict]=None):
@@ -36,7 +36,7 @@ class OpenAIChat(OpenAI):
             message = f' {key}={value}'
             system_message = system_message + message
         self.messages.append(
-            {self.role: self.system, self.content: system_message}
+            {self.ROLE: self.SYSTEM, self.CONTENT: system_message}
         )
 
     def __validate_message(self, message:str):
@@ -62,7 +62,7 @@ class OpenAIChat(OpenAI):
     def send_message(self, message: str, conversation: bool) -> str:
         self.__validate_message(message)
         self.messages.append(
-            {self.role: self.user, self.content: message}
+            {self.ROLE: self.USER, self.CONTENT: message}
         )
         self.__validate_token_count()
         response = self.__send_request()
@@ -84,7 +84,7 @@ class OpenAIChat(OpenAI):
         messages = self.messages.copy()
         if reply is not None:
             messages.append(
-                {self.role: self.assistant, self.content: reply}
+                {self.ROLE: self.ASSISTANT, self.CONTENT: reply}
             )
         return get_token_count(messages, self.model)
 
@@ -101,7 +101,7 @@ class OpenAIChat(OpenAI):
     def __handle_reply(self, reply: str, conversation:bool):
         if conversation:
             self.messages.append(
-                {self.role: self.assistant, self.content: reply}
+                {self.ROLE: self.ASSISTANT, self.CONTENT: reply}
             )
         else:
             # Roll back the messages into the initial stage with only the config message
