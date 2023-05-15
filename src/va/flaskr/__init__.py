@@ -21,3 +21,5 @@ def register():
     app.register_blueprint(context)
     from src.va.controllers.stt_controller import stt
     app.register_blueprint(stt)
+    from src.va.controllers.tts_controller import tts
+    app.register_blueprint(tts)
