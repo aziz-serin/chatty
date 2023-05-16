@@ -8,11 +8,12 @@ app = Flask("chatty")
 
 def init():
     app.app_context()
-    app.config["system"] = Config("resources/config.ini", "system").entries
-    app.config["mongo"] = Config("resources/config.ini", "mongo").entries
-    app.config["flask"] = Config("resources/config.ini", "flask").entries
+    resources_path = "src/va/resources"
+    app.config["system"] = Config(f"{resources_path}/config.ini", "system").entries
+    app.config["mongo"] = Config(f"{resources_path}/config.ini", "mongo").entries
+    app.config["flask"] = Config(f"{resources_path}/config.ini", "flask").entries
     app.config["MAX_CONTENT_PATH"] = 26_214_400
-    app.config["UPLOAD_FOLDER"] = "resources"
+    app.config["UPLOAD_FOLDER"] = resources_path
 
 def register():
     from src.va.controllers.chat_controller import ai_chat

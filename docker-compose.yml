@@ -9,6 +9,26 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data_container:/data/db
+    networks:
+      chatty:
+        aliases:
+          - mongo.localtest.me
+
+  chatty:
+    build:
+      context: .
+      dockerfile: chatty.Dockerfile
+    env_file:
+      - chatty.env
+    ports:
+      - "5005:5005"
+    networks:
+      chatty:
+        aliases:
+          - chatty.localtest.me
 
 volumes:
   mongodb_data_container:
+
+networks:
+  chatty:

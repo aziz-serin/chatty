@@ -178,3 +178,7 @@ pyrightconfig.json
 *.mpga
 *.wav
 *.mpeg
+
+#Google Cloud Credentials
+
+application_default_credentials.json
