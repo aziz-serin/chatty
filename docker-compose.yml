@@ -14,10 +14,10 @@ services:
         aliases:
           - mongo.localtest.me
 
-  chatty:
+  va:
     build:
       context: .
-      dockerfile: chatty.Dockerfile
+      dockerfile: va.Dockerfile
     env_file:
       - chatty.env
     ports:
