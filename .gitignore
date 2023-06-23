@@ -182,3 +182,15 @@ pyrightconfig.json
 #Google Cloud Credentials
 
 application_default_credentials.json
+
+#UI
+
+node_modules
+/build
+/.svelte-kit
+/package
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+/src/ui/.svelte-kit/
