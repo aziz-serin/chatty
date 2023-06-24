@@ -7,7 +7,7 @@ stt = Blueprint('speech_to_text', "chatty")
 stt_service = SttService()
 logger = logging.getLogger("chatty")
 
-@stt.route("/stt", methods=['POST'])
+@stt.route("/api/stt", methods=['POST'])
 def stt_endpoint() -> Response:
     if 'file' not in request.files:
         logger.debug("No file specified in the request")

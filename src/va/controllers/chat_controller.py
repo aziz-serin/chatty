@@ -5,10 +5,10 @@ ai_chat = Blueprint('openai', "chatty")
 
 chat_service = ChatService()
 
-@ai_chat.route("/chat", methods=['POST'])
+@ai_chat.route("/api/chat", methods=['POST'])
 def chat() -> Response:
     return chat_service.chat(content=dict(request.get_json()))
 
-@ai_chat.route("/conversation", methods=['POST'])
+@ai_chat.route("/api/conversation", methods=['POST'])
 def conversation() -> Response:
     return chat_service.conversation(dict(request.get_json()))

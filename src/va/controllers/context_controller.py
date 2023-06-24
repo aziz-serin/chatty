@@ -4,7 +4,7 @@ from src.va.services.context_service import ContextService
 context = Blueprint('context', "chatty")
 context_service = ContextService()
 
-@context.route("/context", methods=['POST', 'GET', 'PUT', 'DELETE'])
+@context.route("/api/context", methods=['POST', 'GET', 'PUT', 'DELETE'])
 def context_endpoint():
     context_id = request.args.get("context_id", default=None, type=str)
     _all = context_service.str2bool(request.args.get("isAll", default=None, type=str))
