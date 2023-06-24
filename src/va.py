@@ -1,8 +1,8 @@
-from src.va.flaskr import init, register, app
+from src.va.flaskr import init, registerBlueprint, app
 
 def main():
     init()
-    register()
+    registerBlueprint()
     app.run(app.config["flask"]["host"], app.config["flask"]["port"])
 
 if __name__ == "__main__":

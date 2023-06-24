@@ -15,7 +15,7 @@ def init():
     app.config["MAX_CONTENT_PATH"] = 26_214_400
     app.config["UPLOAD_FOLDER"] = resources_path
 
-def register():
+def __registerApi__():
     from src.va.controllers.chat_controller import ai_chat
     app.register_blueprint(ai_chat)
     from src.va.controllers.context_controller import context
@@ -24,3 +24,14 @@ def register():
     app.register_blueprint(stt)
     from src.va.controllers.tts_controller import tts
     app.register_blueprint(tts)
+
+def __registerUI__():
+    from src.va.routes.home import home
+    app.register_blueprint(home)
+
+def registerBlueprint():
+    logger = logging.getLogger("chatty")
+    __registerApi__()
+    logger.debug("Registered API endpoints")
+    __registerUI__()
+    logger.debug("Registered UI endpoints")
