@@ -25,13 +25,7 @@ def __registerApi__():
     from src.va.controllers.tts_controller import tts
     app.register_blueprint(tts)
 
-def __registerUI__():
-    from src.va.routes.home import home
-    app.register_blueprint(home)
-
 def registerBlueprint():
     logger = logging.getLogger("chatty")
     __registerApi__()
     logger.debug("Registered API endpoints")
-    __registerUI__()
-    logger.debug("Registered UI endpoints")
