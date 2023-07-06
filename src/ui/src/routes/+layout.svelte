@@ -4,4 +4,11 @@
 
 <NavBar></NavBar>
 
-<slot />
+<slot/>
+
+<style>
+  :global(body) {
+      background-color: gray;
+  }
+
+</style>

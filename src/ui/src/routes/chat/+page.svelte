@@ -2,6 +2,7 @@
   import ChatBox from "$lib/components/ChatBox.svelte";
 	import SubmitButton from "$lib/components/SubmitButton.svelte";
 	import TextBubble from "$lib/components/TextBubble.svelte";
+	import SideBar from "$lib/components/SideBar.svelte";
 	import { fade } from 'svelte/transition';
 	import {afterUpdate} from "svelte";
 
@@ -37,6 +38,7 @@
 
 <slot>
 	<div>
+		<SideBar></SideBar>
 		<div bind:this={element} class="messages">
 			{#each messages as msg}
 				{#if msg.sender === "user"}
@@ -51,14 +53,14 @@
 			{/each}
 		</div>
 	</div>
-	<form class="submission">
+	<div class="submission">
 			<div class="chatBox">
 				<ChatBox bind:message></ChatBox>
 			</div>
 			<div class="submit">
 				<SubmitButton on:click={sendUserMessage} symbol={"✉️"} bgColor={"rgba(0, 0, 0, 0.8)"}></SubmitButton>
 			</div>
-	</form>
+	</div>
 
 </slot>
 
@@ -77,7 +79,7 @@
 	}
 
 	.submission {
-		background-color: white;
+		background-color: transparent;
 		position: absolute;
 		bottom: 20px;
 		width: 80%;
@@ -95,6 +97,7 @@
 	.submit {
 		position: relative;
 		text-align: center;
+		background-color: transparent;
 		width: 99%;
 		right: 0.4%;
 	}

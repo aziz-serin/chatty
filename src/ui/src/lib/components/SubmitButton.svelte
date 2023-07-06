@@ -19,6 +19,7 @@
         box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25),
         inset 0px -2px 3px rgba(0, 0, 0, 0.25);
         width: 100%;
+        background-color: gray;
     }
     button:hover {
         cursor: pointer;

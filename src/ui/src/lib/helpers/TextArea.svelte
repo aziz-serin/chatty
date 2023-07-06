@@ -28,15 +28,20 @@
 		overflow: scroll;
 		min-height: 100px;
 		resize: none;
-		background: transparent;
+		background: gray;
+		color: #ffffff;
 		width: 100%;
 		font-size: 16px;
 	}
 
+	textarea::placeholder {
+  	color: #ffffff;
+	}
+
 	textarea:focus {
 		outline: none !important;
-    border:1px solid rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 10px gray;
+    border:1px solid white;
+    box-shadow: 0 0 10px white;
 	}
 
 	.readonlyTextArea {
