@@ -19,7 +19,7 @@
     border-color: white;
     text-align: center;
     font-size: 16px;
-    width: 100%;
+    width: 95%;
   }
 
   input:focus {
@@ -40,8 +40,6 @@
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;;
     color: white;
     font-size: 18px;
-    width: 100%;
-    text-overflow: clip;
   }
 
   .labelContainer {

@@ -86,20 +86,22 @@
 
 <style>
 	.configContainer {
-		position: fixed;
+		position: absolute;
 		height: 100%;
 		background-color: #424245;
 		left: 0;
 		bottom: 0;
 		top: 45px;
 		width: 18%;
+		z-index: 999;
 	}
 
 	.configSection {
 		background: transparent;
 		position: relative;
 		height: 7%;
-		margin: 30px;
+		margin: 10px;
+		z-index: 999;
 	}
 
 	.messages {
