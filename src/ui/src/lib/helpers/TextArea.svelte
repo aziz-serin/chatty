@@ -29,6 +29,7 @@
 		min-height: 100px;
 		resize: none;
 		background: gray;
+		border: 1px solid white;
 		color: #ffffff;
 		width: 100%;
 		font-size: 16px;

@@ -2,13 +2,20 @@
   import ChatBox from "$lib/components/ChatBox.svelte";
 	import SubmitButton from "$lib/components/SubmitButton.svelte";
 	import TextBubble from "$lib/components/TextBubble.svelte";
-	import SideBar from "$lib/components/SideBar.svelte";
+	import ConfigInput from "$lib/components/ConfigInput.svelte";
 	import { fade } from 'svelte/transition';
 	import {afterUpdate} from "svelte";
 
 	let message = "";
 	let messages = [];
 	let element;
+	let chatModelValue = "gpt-3.5-turbo";
+	let tokenCount = 4000;
+
+	const configInputs = {
+		"CHATGPT MODEL": chatModelValue,
+		"TOKEN COUNT": tokenCount
+	}
 
 	class Message {
 		constructor(sender, msg) {
@@ -38,7 +45,19 @@
 
 <slot>
 	<div>
-		<SideBar></SideBar>
+		<!--CONFIG_SIDEBAR-->
+		<div class="configContainer" transition:fade|global={{delay:100}}>
+			{#each Object.entries(configInputs) as [key, value]}
+				<form class="configSection">
+					<ConfigInput
+						bind:inputValue={value}
+						label={key}
+					>
+					</ConfigInput>
+				</form>
+			{/each}
+		</div>
+		<!--MESSAGES-->
 		<div bind:this={element} class="messages">
 			{#each messages as msg}
 				{#if msg.sender === "user"}
@@ -53,7 +72,8 @@
 			{/each}
 		</div>
 	</div>
-	<div class="submission">
+	<!--SUBMISSION-->
+	<div class="submission" transition:fade|global={{delay:100}}>
 			<div class="chatBox">
 				<ChatBox bind:message></ChatBox>
 			</div>
@@ -65,6 +85,22 @@
 </slot>
 
 <style>
+	.configContainer {
+		position: fixed;
+		height: 100%;
+		background-color: #424245;
+		left: 0;
+		bottom: 0;
+		top: 45px;
+		width: 18%;
+	}
+
+	.configSection {
+		background: transparent;
+		position: relative;
+		height: 7%;
+		margin: 30px;
+	}
 
 	.messages {
 		overflow: hidden;
