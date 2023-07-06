@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="js">
   import ChatBox from "$lib/components/ChatBox.svelte";
 	import SubmitButton from "$lib/components/SubmitButton.svelte";
 	import TextBubble from "$lib/components/TextBubble.svelte";
@@ -6,14 +6,11 @@
 	import {afterUpdate} from "svelte";
 
 	let message = "";
-	let messages: any[] = [];
+	let messages = [];
 	let element;
 
 	class Message {
-		public sender: string;
-		public msg: string;
-
-		public constructor(sender:string, msg:string) {
+		constructor(sender, msg) {
 			this.sender = sender;
 			this.msg = msg;
 		}
@@ -34,7 +31,7 @@
 
 	const scrollToBottom = async (node) => {
     node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
-  }
+  };
 
 </script>
 
@@ -76,6 +73,7 @@
 		width: 100%;
 		height: 80%;
 		max-height: 80%;
+		right:0.5%;
 	}
 
 	.submission {
@@ -87,14 +85,18 @@
 	}
 
 	.chatBox {
+		position: relative;
 		bottom: 0;
 		text-align: center;
-		width: 95%;
+		width: 99%;
+		right: 0.4%;
 	}
 
 	.submit {
+		position: relative;
 		text-align: center;
-		width: 95%;
+		width: 99%;
+		right: 0.4%;
 	}
 
 	.list {

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="js">
 	import {autoHeight} from "svelte-textarea-auto-height";
 	export let value = '';
   export let placeHolder = '';

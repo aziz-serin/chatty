@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="js">
   export let sender = "user";
   export let text = "";
 </script>
@@ -26,7 +26,8 @@
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     display: inline-block;
     position: relative;
-    width: 50%;
+    width: 40%;
+    font-size: 14px;
     height: auto;
     background-color: lightgray;
   }
