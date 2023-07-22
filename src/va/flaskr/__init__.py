@@ -1,5 +1,6 @@
 from flask import Flask
 from src.va.openai_tools.config.config_manager import Config
+from flask_cors import CORS
 import logging
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s")
@@ -14,6 +15,11 @@ def init():
     app.config["flask"] = Config(f"{resources_path}/config.ini", "flask").entries
     app.config["MAX_CONTENT_PATH"] = 26_214_400
     app.config["UPLOAD_FOLDER"] = resources_path
+    app.config["ORIGINS"] = Config(f"{resources_path}/config.ini", "origins").entries
+    __setup_cors__()
+
+def __setup_cors__():
+    CORS(app, origins=[app.config["ORIGINS"]["origin"]])
 
 def __registerApi__():
     from src.va.controllers.chat_controller import ai_chat
