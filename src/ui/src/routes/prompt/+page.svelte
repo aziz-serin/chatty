@@ -32,6 +32,7 @@
 	}
 
 	async function chat(userMessage) {
+		message = "";
 		const response = await sendChat({
 			"prompt": userMessage,
 			"model": chatModelValue,
