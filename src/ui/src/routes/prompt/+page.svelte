@@ -5,7 +5,7 @@
 	import ConfigInput from "$lib/components/ConfigInput.svelte";
 	import { fade } from 'svelte/transition';
 	import { afterUpdate } from "svelte";
-	import { sendChat } from "./chatAPIFetch.ts";
+	import { sendChat } from "./promptAPIFetch.ts";
 
 	let message = "";
 	let messages = [];
