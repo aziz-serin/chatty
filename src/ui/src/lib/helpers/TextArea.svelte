@@ -25,24 +25,25 @@
 		padding: 0.5em;
 		box-sizing: border-box;
 		line-height: 1.2;
-		overflow: scroll;
+		overflow-y: scroll;
 		min-height: 100px;
+		max-height: 150px;
 		resize: none;
-		background: gray;
-		border: 1px solid white;
-		color: #ffffff;
+		background: white;
+		border: 1px solid gray;
+		color: black;
 		width: 100%;
 		font-size: 16px;
 	}
 
 	textarea::placeholder {
-  	color: #ffffff;
+  	color: black;
 	}
 
 	textarea:focus {
 		outline: none !important;
-    border:1px solid white;
-    box-shadow: 0 0 10px white;
+    border:1px solid gray;
+    box-shadow: 0 0 10px gray;
 	}
 
 	.readonlyTextArea {

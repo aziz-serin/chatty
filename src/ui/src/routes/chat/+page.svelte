@@ -4,7 +4,8 @@
 	import TextBubble from "$lib/components/TextBubble.svelte";
 	import ConfigInput from "$lib/components/ConfigInput.svelte";
 	import { fade } from 'svelte/transition';
-	import {afterUpdate} from "svelte";
+	import { afterUpdate } from "svelte";
+	import { sendChat } from "./chatAPIFetch.ts";
 
 	let message = "";
 	let messages = [];
@@ -24,13 +25,28 @@
 		}
 	}
 
-	function sendUserMessage() {
-		let msg = new Message("user", message);
+	function saveUserMessage(userMessage) {
+		const msg = new Message("user", userMessage);
 		messages.push(msg);
-		let msg2 = new Message("replied", message);
-		messages.push(msg2);
 		messages = messages;
-		message = "";
+	}
+
+	async function chat(userMessage) {
+		const response = await sendChat({
+			"prompt": userMessage,
+			"model": chatModelValue,
+			"token_limit": tokenCount
+		});
+		let responseTokenCount = response["token_count"];
+		let responseMessage = response["message"];
+		const repliedMessage = new Message("replied", responseMessage);
+		messages.push(repliedMessage);
+		messages = messages;
+	}
+
+	async function sendUserMessage() {
+		saveUserMessage(message);
+		await chat(message);
 	}
 
 	afterUpdate(() => {
@@ -87,13 +103,13 @@
 <style>
 	.configContainer {
 		position: absolute;
-		height: 100%;
+		height: 96.2%;
 		background-color: #424245;
 		left: 0;
 		bottom: 0;
 		top: 45px;
 		width: 18%;
-		z-index: 999;
+		z-index: 990;
 	}
 
 	.configSection {

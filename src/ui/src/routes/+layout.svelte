@@ -8,6 +8,6 @@
 
 <style>
   :global(body) {
-    background-color: gray;
+    background-color: white;
   }
 </style>

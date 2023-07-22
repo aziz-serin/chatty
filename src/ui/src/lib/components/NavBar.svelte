@@ -9,7 +9,8 @@
     { label: "Chat", href: "/chat" },
     { label: "Conversation", href: "/conversation" },
     { label: "Translate", href: "/translate" },
-    { label: "Prompt", href: "/prompt" }
+    { label: "Prompt", href: "/prompt" },
+    { label: "History", href: "/history"}
   ];
 
   // Mobile menu click event handler
