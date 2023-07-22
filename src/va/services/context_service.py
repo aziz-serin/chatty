@@ -1,3 +1,4 @@
+import bson
 from flask import json, Response
 from src.va.context.context import Context
 from pymongo.errors import PyMongoError
@@ -76,7 +77,8 @@ class ContextService(Service):
         )
 
     def get_context(self, context_id: str = None) -> Response:
-        if context_id is None:
+        if context_id is None or (not bson.ObjectId.is_valid(context_id)):
+            self.logger.debug(f"Invalid context id {context_id}")
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -106,7 +108,8 @@ class ContextService(Service):
         )
 
     def edit_context(self, content:dict, context_id: str = None) -> Response:
-        if context_id is None:
+        if context_id is None or (not bson.ObjectId.is_valid(context_id)):
+            self.logger.debug(f"Invalid context id {context_id}")
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
@@ -153,7 +156,8 @@ class ContextService(Service):
         )
 
     def delete_context(self, context_id: str = None) -> Response:
-        if context_id is None:
+        if context_id is None or (not bson.ObjectId.is_valid(context_id)):
+            self.logger.debug(f"Invalid context id {context_id}")
             return Response(
                 response=json.dumps({
                     "reason": "Invalid/Bad Request"
