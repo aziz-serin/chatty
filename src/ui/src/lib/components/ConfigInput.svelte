@@ -40,6 +40,8 @@
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;;
     color: white;
     font-size: 18px;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .labelContainer {

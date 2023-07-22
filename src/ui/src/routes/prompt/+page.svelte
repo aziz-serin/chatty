@@ -117,7 +117,8 @@
 		background: transparent;
 		position: relative;
 		height: 7%;
-		margin: 10px;
+		margin: 20px;
+		padding-bottom: 10px;
 		z-index: 999;
 	}
 
