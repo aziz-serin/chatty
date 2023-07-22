@@ -3,20 +3,27 @@
 	import SubmitButton from "$lib/components/SubmitButton.svelte";
 	import TextBubble from "$lib/components/TextBubble.svelte";
 	import ConfigInput from "$lib/components/ConfigInput.svelte";
-	import { Message } from "$lib/helpers/scripts";
+  import { Message } from "$lib/helpers/scripts";
 	import { fade } from 'svelte/transition';
 	import { afterUpdate } from "svelte";
-	import { sendPrompt } from "./promptAPIFetch.ts";
+	import { sendChat } from "./chatAPIFetch";
+  import { page } from "$app/stores"
 
 	let message = "";
 	let messages = [];
 	let element;
 	let chatModelValue = "gpt-3.5-turbo";
 	let tokenCount = 4000;
+  let stt_model = "whisper-1";
+  let context_id = "999";
+  if ($page.url.searchParams.has("context_id")) {
+      context_id = $page.url.searchParams.get("context_id");
+  }
 
 	const configInputs = {
 		"CHATGPT MODEL": chatModelValue,
-		"TOKEN COUNT": tokenCount
+		"TOKEN COUNT": tokenCount,
+    "SPEECH TO TEXT MODEL": stt_model
 	}
 
 	function saveUserMessage(userMessage) {
@@ -27,13 +34,19 @@
 
 	async function chat(userMessage: string) {
 		message = "";
-		const response = await sendPrompt({
+		const response = await sendChat({
 			"prompt": userMessage,
 			"model": chatModelValue,
 			"token_limit": tokenCount,
-		});
+      "context_id": context_id,
+      "stt_model": stt_model
+    });
 		let responseTokenCount = response["token_count"];
 		let responseMessage = response["message"];
+    if (context_id !== response["context_id"]) {
+      context_id = response["context_id"]
+      $page.url.searchParams.set("context_id", context_id)
+    }
 		const repliedMessage = new Message("replied", responseMessage);
 		messages.push(repliedMessage);
 		messages = messages;

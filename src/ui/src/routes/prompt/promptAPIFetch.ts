@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageLoad} */
-export async function sendChat(variables: { token_count: number, model: string, prompt: string }){
+export async function sendPrompt(variables: { token_limit: number; model: string; prompt: string }){
     const response = await fetch('http://chatty.localtest.me:5005/api/chat', {
         method: 'POST',
         body: JSON.stringify(variables),
