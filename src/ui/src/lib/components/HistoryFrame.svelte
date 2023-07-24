@@ -7,6 +7,17 @@
   export let chat_models = [];
   export let token_limits = [];
   export let stt_models = [];
+
+  async function handleDelete(context_id: string) {
+      const isOk = await delete_context(context_id);
+      if (isOk) {
+          alert(`Deletion of ${context_id} was successful!`);
+      } else {
+          alert(`Deletion of ${context_id} has failed!`);
+      }
+      location.reload();
+  }
+
 </script>
 
 <table class="frame" bind:this={labels}>
@@ -36,7 +47,7 @@
         <SubmitButton
           bgColor="lightcoral"
           symbol="Delete"
-          on:click={delete_context(label)}
+          on:click={handleDelete(label)}
         >
         </SubmitButton>
       </td>

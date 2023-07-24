@@ -25,7 +25,6 @@
 
 <slot>
   {#if context_id.length === 0}
-    <p class="loading">Loading ....</p>
   {:else}
     <HistoryFrame
       labels={context_id}
@@ -36,11 +35,3 @@
     </HistoryFrame>
   {/if}
 </slot>
-
-<style>
-  .loading {
-    position: absolute;
-    top: 5%;
-    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-</style>
