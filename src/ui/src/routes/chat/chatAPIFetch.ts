@@ -1,6 +1,6 @@
 /** @type {import('./$types').PageLoad} */
 export async function sendChat(variables: { token_limit: number; model: string; prompt: string;
-    stt_model: string; context_id: string; }){
+    context_id: string; }){
     let context: string = variables.context_id;
     let exists: boolean = await contextExists(context);
     let body;

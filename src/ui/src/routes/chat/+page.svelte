@@ -14,7 +14,6 @@
 	let element;
 	let chatModelValue = "gpt-3.5-turbo";
 	let tokenCount = 4000;
-  let stt_model = "whisper-1";
   let context_id = "999";
   if ($page.url.searchParams.has("context_id")) {
       context_id = $page.url.searchParams.get("context_id");
@@ -23,7 +22,6 @@
 	const configInputs = {
 		"CHATGPT MODEL": chatModelValue,
 		"TOKEN COUNT": tokenCount,
-    "SPEECH TO TEXT MODEL": stt_model
 	}
 
 	function saveUserMessage(userMessage) {
@@ -39,7 +37,6 @@
 			"model": chatModelValue,
 			"token_limit": tokenCount,
       "context_id": context_id,
-      "stt_model": stt_model
     });
 		let responseTokenCount = response["token_count"];
 		let responseMessage = response["message"];
