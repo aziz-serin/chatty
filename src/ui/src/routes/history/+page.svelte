@@ -1,7 +1,7 @@
 <script lang="ts">
   import HistoryFrame from "$lib/components/HistoryFrame.svelte";
-  import {getAllContext} from "./historyAPIFetch";
-  import {onMount} from "svelte";
+  import { getAllContext } from "./historyAPIFetch";
+  import { onMount } from "svelte";
 
   let context_id = [];
   let stt_model = [];
@@ -21,12 +21,11 @@
     chat_model = chat_model;
     token_limit = token_limit;
   });
-
 </script>
 
 <slot>
   {#if context_id.length === 0}
-    <label>Loading ....</label>
+    <p class="loading">Loading ....</p>
   {:else}
     <HistoryFrame
       labels={context_id}
@@ -39,7 +38,7 @@
 </slot>
 
 <style>
-  label {
+  .loading {
     position: absolute;
     top: 5%;
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
