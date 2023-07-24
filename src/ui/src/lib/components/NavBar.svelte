@@ -38,11 +38,11 @@
       <div class="middle-line"></div>
     </div>
     <ul class={`navbar-list${showMobileMenu ? ' mobile' : ''}`}>
-      <li>
+      <li data-sveltekit-reload>
         <a href={"/"} class="main">CHATTY</a>
       </li>
       {#each navItems as item}
-        <li>
+        <li data-sveltekit-reload>
           <a href={item.href}>{item.label}</a>
         </li>
       {/each}
