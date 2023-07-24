@@ -5,7 +5,6 @@ export async function sendChat(variables: { token_limit: number; model: string; 
     let exists: boolean = await contextExists(context);
     let body;
     if (!exists) {
-        //context = await createContext(variables.token_limit, variables.model, variables.prompt);
         body = JSON.stringify({
             prompt: variables.prompt,
         });
@@ -26,7 +25,7 @@ export async function sendChat(variables: { token_limit: number; model: string; 
     return {
         "message": data["response"],
         "token_count": data["token_count"],
-        "context_id": context
+        "context_id": data["context_id"]
     };
 }
 
