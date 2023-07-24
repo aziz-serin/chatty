@@ -6,3 +6,7 @@ export class Message {
 			this.msg = msg;
 		}
 	}
+
+export async function delete_context(context_id: string) {
+
+}
