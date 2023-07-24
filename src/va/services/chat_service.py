@@ -10,12 +10,6 @@ class ChatService(Service):
     def __init__(self):
         super().__init__()
         self.logger = logging.getLogger("chatty")
-        self.default_context = Context(
-            config={},
-            chat_model="gpt-3.5-turbo",
-            token_limit= 4000,
-            default=True
-        )
 
     def chat(self, content:dict) -> Response:
         try:
@@ -105,9 +99,19 @@ class ChatService(Service):
                 context = Context()
                 context.load_from_json(context_document)
             else:
-                context = self.default_context
+                context = Context(
+                    config={},
+                    chat_model="gpt-3.5-turbo",
+                    token_limit= 4000,
+                    default=True
+                )
         else:
-            context = self.default_context
+            context = Context(
+                config={},
+                chat_model="gpt-3.5-turbo",
+                token_limit=4000,
+                default=True
+            )
 
         openai_chat = OpenAIChat(
             model=context.chat_model,
