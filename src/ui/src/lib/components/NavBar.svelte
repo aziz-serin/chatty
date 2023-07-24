@@ -177,7 +177,7 @@
     height: 45px;
     align-items: center;
     padding: 0 10px;
-    font-size: 13px;
+    font-size: 25px;
   }
 
   @media only screen and (min-width: 767px) {
@@ -193,5 +193,8 @@
     .navbar-list a {
       display: inline-flex;
     }
+  }
+  li {
+      font-size: 20px;
   }
 </style>
