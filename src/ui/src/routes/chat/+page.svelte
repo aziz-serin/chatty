@@ -7,7 +7,8 @@
 	import { fade } from 'svelte/transition';
 	import { afterUpdate } from "svelte";
 	import { sendChat } from "./chatAPIFetch";
-  import { page } from "$app/stores"
+  import { page } from "$app/stores";
+	import {get_context} from "$lib/helpers/scripts";
 
 	let message = "";
 	let messages = [];
@@ -15,8 +16,10 @@
 	let chatModelValue = "gpt-3.5-turbo";
 	let tokenCount = 4000;
   let context_id = "999";
+
   if ($page.url.searchParams.has("context_id")) {
       context_id = $page.url.searchParams.get("context_id");
+			updateMessagesWithContext();
   }
 
 	const configInputs = {
@@ -25,10 +28,30 @@
 	}
 
 	function saveUserMessage(userMessage) {
-		const msg = new Message("user", userMessage);
-		messages.push(msg);
+		messages.push(new Message("user", userMessage));
 		messages = messages;
 	}
+
+	async function updateMessagesWithContext() {
+		const context_messages = await get_context(context_id);
+		if (context_messages.length === 0) {
+			return;
+		}
+		context_messages.forEach((value) => {
+			switch (value["role"]) {
+				case "user":
+					messages.push(new Message("user", value["content"]));
+					break;
+				case "assistant":
+					messages.push(new Message("replied", value["content"]));
+					break;
+				default:
+					break;
+			}
+		});
+		messages = messages;
+	}
+
 
 	async function chat(userMessage: string) {
 		message = "";
@@ -44,8 +67,7 @@
       context_id = response["context_id"]
       $page.url.searchParams.set("context_id", context_id)
     }
-		const repliedMessage = new Message("replied", responseMessage);
-		messages.push(repliedMessage);
+		messages.push(new Message("replied", responseMessage));
 		messages = messages;
 	}
 
