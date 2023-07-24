@@ -17,7 +17,7 @@
     <th>Speech to Text Model</th>
   </tr>
   {#each labels as label, i}
-    <tr transition:fade|global={{delay:100 + (i+1)*100}}>
+    <tr transition:fade|global={{delay:100 + (i+1)*50}}>
       <td class="hasBackground">
         <a href={'/chat?context_id=' + label}>
           {label}
