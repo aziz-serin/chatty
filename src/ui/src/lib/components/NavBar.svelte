@@ -7,9 +7,10 @@
   // List of navigation items
   const navItems = [
     { label: "Chat", href: "/chat" },
-    { label: "Conversation", href: "/conversation" },
-    { label: "Translate", href: "/translate" },
     { label: "Prompt", href: "/prompt" },
+    { label: "Transcribe", href: "/conversation" },
+    { label: "Translate", href: "/translate" },
+    { label: "Speech", href: "/speech" },
     { label: "History", href: "/history"}
   ];
 
