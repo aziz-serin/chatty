@@ -9,10 +9,16 @@
       <p> {text} </p>
     </div>
   </div>
-{:else}
+{:else if sender === "replied"}
   <div class="talk-bubble tri-right round btm-left-in" >
     <div class="talktext">
       <p> {text} </p>
+    </div>
+  </div>
+{:else}
+  <div class="replied_bubble tri-right round alone" >
+    <div class="talktext">
+      <p style="text-align: center"> {text} </p>
     </div>
   </div>
 {/if}
@@ -29,6 +35,18 @@
     width: 40%;
     font-size: 14px;
     height: auto;
+    background-color: lightgray;
+  }
+
+  .replied_bubble {
+    margin: 10px;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    display: inline-block;
+    position: relative;
+    width: 50%;
+    font-size: 17px;
+    height: auto;
+    text-align: center;
     background-color: lightgray;
   }
 
