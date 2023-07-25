@@ -11,13 +11,8 @@
 	let message = "";
 	let messages = [];
 	let element;
-	let chatModelValue = "gpt-3.5-turbo";
-	let tokenCount = 4000;
-
-	const configInputs = {
-		"CHATGPT MODEL": chatModelValue,
-		"TOKEN COUNT": tokenCount
-	}
+	let chatModel = "gpt-3.5-turbo";
+	let tokenLimit = 4000;
 
 	function saveUserMessage(userMessage) {
 		const msg = new Message("user", userMessage);
@@ -29,8 +24,8 @@
 		message = "";
 		const response = await sendPrompt({
 			"prompt": userMessage,
-			"model": chatModelValue,
-			"token_limit": tokenCount,
+			"model": chatModel,
+			"token_limit": tokenLimit,
 		});
 		let responseTokenCount = response["token_count"];
 		let responseMessage = response["message"];
@@ -58,15 +53,20 @@
 	<div>
 		<!--CONFIG_SIDEBAR-->
 		<div class="configContainer" transition:fade|global={{delay:100}}>
-			{#each Object.entries(configInputs) as [key, value]}
-				<form class="configSection">
-					<ConfigInput
-						bind:inputValue={value}
-						label={key}
-					>
-					</ConfigInput>
-				</form>
-			{/each}
+			<form class="configSection">
+				<ConfigInput
+					bind:inputValue={chatModel}
+					label={"Chat Model"}
+				>
+				</ConfigInput>
+			</form>
+			<form class="configSection">
+				<ConfigInput
+					bind:inputValue={tokenLimit}
+					label={tokenLimit}
+				>
+				</ConfigInput>
+			</form>
 		</div>
 		<!--MESSAGES-->
 		<div bind:this={element} class="messages">

@@ -3,7 +3,8 @@
   import { fade } from 'svelte/transition';
   import { delete_context } from "$lib/helpers/scripts";
 
-  export let labels = [];
+  export let labels = []
+  export let ids = [];
   export let chat_models = [];
   export let token_limits = [];
   export let stt_models = [];
@@ -20,18 +21,18 @@
 
 </script>
 
-<table class="frame" bind:this={labels}>
+<table class="frame" bind:this={ids}>
   <tr transition:fade|global={{delay:100}}>
-    <th>Context ID</th>
+    <th>Chat Name</th>
     <th>Chat Model</th>
     <th>Token Limit</th>
     <th>Speech to Text Model</th>
   </tr>
-  {#each labels as label, i}
+  {#each ids as id, i}
     <tr transition:fade|global={{delay:100 + (i+1)*50}}>
       <td class="hasBackground">
-        <a href={'/chat?context_id=' + label} data-sveltekit-reload>
-          {label}
+        <a href={`/chat?context_id=${id}`} data-sveltekit-reload>
+          {labels[i]}
         </a>
       </td>
       <td class="hasBackground">
@@ -47,7 +48,7 @@
         <SubmitButton
           bgColor="lightcoral"
           symbol="Delete"
-          on:click={handleDelete(label)}
+          on:click={handleDelete(id)}
         >
         </SubmitButton>
       </td>

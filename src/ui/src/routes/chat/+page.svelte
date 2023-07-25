@@ -13,19 +13,15 @@
 	let message = "";
 	let messages = [];
 	let element;
-	let chatModelValue = "gpt-3.5-turbo";
-	let tokenCount = 4000;
   let context_id = "999";
+	let chatModel =  "gpt-3.5-turbo";
+	let tokenLimit =  4000;
+	let chatName =  "Default";
 
   if ($page.url.searchParams.has("context_id")) {
       context_id = $page.url.searchParams.get("context_id");
 			updateMessagesWithContext();
   }
-
-	const configInputs = {
-		"CHATGPT MODEL": chatModelValue,
-		"TOKEN COUNT": tokenCount,
-	}
 
 	function saveUserMessage(userMessage) {
 		messages.push(new Message("user", userMessage));
@@ -33,11 +29,11 @@
 	}
 
 	async function updateMessagesWithContext() {
-		const context_messages = await get_context(context_id);
-		if (context_messages.length === 0) {
+		const context = await get_context(context_id);
+		if (context["messages"].length === 0) {
 			return;
 		}
-		context_messages.forEach((value) => {
+		context["messages"].forEach((value) => {
 			switch (value["role"]) {
 				case "user":
 					messages.push(new Message("user", value["content"]));
@@ -49,17 +45,18 @@
 					break;
 			}
 		});
+		chatName = context["config"]["chat_name"];
 		messages = messages;
 	}
-
 
 	async function chat(userMessage: string) {
 		message = "";
 		const response = await sendChat({
+			"config": {"chat_name": chatName},
 			"prompt": userMessage,
-			"model": chatModelValue,
-			"token_limit": tokenCount,
-      "context_id": context_id,
+			"model": chatModel,
+			"token_limit": tokenLimit,
+      "context_id": context_id
     });
 		let responseTokenCount = response["token_count"];
 		let responseMessage = response["message"];
@@ -73,6 +70,7 @@
 
 	async function sendUserMessage() {
 		saveUserMessage(message);
+		console.log(chatName);
 		await chat(message);
 	}
 
@@ -90,15 +88,27 @@
 	<div>
 		<!--CONFIG_SIDEBAR-->
 		<div class="configContainer" transition:fade|global={{delay:100}}>
-			{#each Object.entries(configInputs) as [key, value]}
-				<form class="configSection">
-					<ConfigInput
-						bind:inputValue={value}
-						label={key}
-					>
-					</ConfigInput>
-				</form>
-			{/each}
+			<form class="configSection">
+				<ConfigInput
+					bind:inputValue={chatName}
+					label={"Chat Name"}
+				>
+				</ConfigInput>
+			</form>
+			<form class="configSection">
+				<ConfigInput
+					bind:inputValue={chatModel}
+					label={"Chat Model"}
+				>
+				</ConfigInput>
+			</form>
+			<form class="configSection">
+				<ConfigInput
+					bind:inputValue={tokenLimit}
+					label={tokenLimit}
+				>
+				</ConfigInput>
+			</form>
 		</div>
 		<!--MESSAGES-->
 		<div bind:this={element} class="messages">

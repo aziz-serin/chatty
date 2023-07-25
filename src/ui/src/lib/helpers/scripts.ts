@@ -19,8 +19,7 @@ export async function get_context(context_id: string) {
 		method: 'GET'
 	});
 	if (response.ok) {
-		const data = await response.json();
-		return data["messages"];
+		return await response.json();
 	}
 	return [];
 }
