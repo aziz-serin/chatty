@@ -8,9 +8,9 @@
   const navItems = [
     { label: "Chat", href: "/chat" },
     { label: "Prompt", href: "/prompt" },
-    { label: "Transcribe", href: "/conversation" },
+    { label: "Transcribe", href: "/transcribe" },
+    { label: "To Speech", href: "/speech" },
     { label: "Translate", href: "/translate" },
-    { label: "Speech", href: "/speech" },
     { label: "History", href: "/history"}
   ];
 
@@ -178,7 +178,7 @@
     height: 45px;
     align-items: center;
     padding: 0 10px;
-    font-size: 25px;
+    font-size: 20px;
   }
 
   @media only screen and (min-width: 767px) {
