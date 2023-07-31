@@ -14,7 +14,7 @@ export const voices: any = {
     "Turkish": {"Male": "tr-TR-Wavenet-B", "Female": "tr-TR-Wavenet-A"},
 };
 
-export let languages: string[] = ["German",
+export let languages: string[] = [
     "Arabic",
     "Chinese (Mandarin)",
     "Dutch",
