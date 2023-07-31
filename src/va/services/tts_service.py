@@ -48,6 +48,6 @@ class TtsService(Service):
         bytez = talkie.get_sound(text)
         return send_file(
             BytesIO(bytez),
-            mimetype='audio/mp4',
-            download_name='audio.mp4',
+            mimetype='audio/m4a',
+            download_name='audio.m4a',
         )
