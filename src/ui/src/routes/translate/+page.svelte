@@ -4,31 +4,36 @@
 	import ConfigInput from "$lib/components/ConfigInput.svelte";
 	import { fade } from 'svelte/transition';
 	import { afterUpdate } from "svelte";
-  import { transcribeAudioFile } from "$lib/helpers/scripts";
+	import { translateAudioFile } from "$lib/helpers/scripts";
 
-  let files = [];
+	let files = [];
 	let messages = [];
 	let element;
 	let sttModel = "whisper-1";
+	let operationCount = 0;
 
 	afterUpdate(() => {
 		if(messages) scrollToBottom(element);
-  });
+	});
 
 	const scrollToBottom = async (node) => {
-    node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
-  };
+		node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+	};
 
-  async function sendAudioFile() {
+	async function sendAudioFile() {
+		if (operationCount === 0) {
+			alert('Currently the only supported translation language is from any language to English');
+		}
+		operationCount++;
 		if (files.length === 0) {
-				return;
+			return;
 		}
 		console.log(files);
-		const text = await transcribeAudioFile(files[0], sttModel);
+		const text = await translateAudioFile(files[0], sttModel);
 		messages.push(text);
 		messages = messages;
 		files = [];
-  }
+	}
 
 </script>
 

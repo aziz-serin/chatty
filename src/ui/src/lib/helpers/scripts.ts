@@ -35,3 +35,15 @@ export async function transcribeAudioFile(file: File, stt_model: string) {
 	const data = await response.json();
 	return data["response"];
 }
+
+export async function translateAudioFile(file: File, stt_model: string) {
+	let formData = new FormData();
+	formData.append('file', file);
+	formData.append('stt_model', stt_model);
+	const response: Response = await fetch(`http://chatty.localtest.me:5005/api/stt?method=translate`, {
+		method: 'POST',
+		body: formData
+	});
+	const data = await response.json();
+	return data["response"];
+}
