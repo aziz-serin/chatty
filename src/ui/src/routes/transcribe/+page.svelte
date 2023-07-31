@@ -32,6 +32,10 @@
 
 </script>
 
+<svelte:head>
+    <title>{`Transcribe`}</title>
+</svelte:head>
+
 <slot>
 	<div>
 		<!--CONFIG_SIDEBAR-->

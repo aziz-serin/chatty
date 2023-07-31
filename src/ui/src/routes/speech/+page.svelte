@@ -52,6 +52,10 @@
 
 </script>
 
+<svelte:head>
+    <title>{`To Speech`}</title>
+</svelte:head>
+
 <slot>
 	<div>
 		<!--CONFIG_SIDEBAR-->

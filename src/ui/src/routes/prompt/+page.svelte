@@ -49,6 +49,10 @@
 
 </script>
 
+<svelte:head>
+    <title>{`Prompt`}</title>
+</svelte:head>
+
 <slot>
 	<div>
 		<!--CONFIG_SIDEBAR-->

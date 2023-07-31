@@ -40,7 +40,9 @@
     </div>
     <ul class={`navbar-list${showMobileMenu ? ' mobile' : ''}`}>
       <li data-sveltekit-reload>
-        <a href={"/"} class="main">CHATTY</a>
+        <a href={"/"} class="main">
+          <img src="/assets/favicon-32x32.png" alt="Icon for the website home page">
+        </a>
       </li>
       {#each navItems as item}
         <li data-sveltekit-reload>

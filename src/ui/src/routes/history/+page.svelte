@@ -25,6 +25,10 @@
   });
 </script>
 
+<svelte:head>
+    <title>{`History`}</title>
+</svelte:head>
+
 <slot>
   {#if context_id.length === 0}
   {:else}

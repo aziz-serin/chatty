@@ -37,6 +37,10 @@
 
 </script>
 
+<svelte:head>
+    <title>{`Translate`}</title>
+</svelte:head>
+
 <slot>
 	<div>
 		<!--CONFIG_SIDEBAR-->

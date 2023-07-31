@@ -84,6 +84,10 @@
 
 </script>
 
+<svelte:head>
+    <title>{`Chat`}</title>
+</svelte:head>
+
 <slot>
 	<div>
 		<!--CONFIG_SIDEBAR-->
