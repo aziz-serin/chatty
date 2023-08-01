@@ -47,6 +47,7 @@ class ContextService(Service):
         try:
             default = content["default"]
         except KeyError:
+            default = False
             pass
         context_obj = Context(
             config=config,
