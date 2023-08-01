@@ -35,7 +35,7 @@ export async function sendChat(variables: {
 }
 
 async function contextExists(context_id: string) {
-    const url: string = `${HOST_NAME}/api/context` + "?context_id=" + context_id;
+    const url: string = `${HOST_NAME}/api/context?context_id=${context_id}`;
     const response: Response = await fetch(url, {
         method: 'GET',
     });
