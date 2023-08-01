@@ -109,7 +109,7 @@
 			<form class="configSection">
 				<ConfigInput
 					bind:inputValue={tokenLimit}
-					label={tokenLimit}
+					label={"Token Limit"}
 				>
 				</ConfigInput>
 			</form>
