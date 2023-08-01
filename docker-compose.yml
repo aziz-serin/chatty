@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   mongodb_container:
     image: mongo:latest
@@ -26,6 +27,17 @@ services:
       chatty:
         aliases:
           - va.localtest.me
+
+  chatty:
+    build:
+      context: .
+      dockerfile: chatty.Dockerfile
+    ports:
+      - "5173:5173"
+    networks:
+      chatty:
+        aliases:
+          - chatty.localtest.me
 
 volumes:
   mongodb_data_container:

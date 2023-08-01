@@ -1,3 +1,6 @@
 .gitignore
 docker-compose.yml
 va.Dockerfile
+.svelte-kit
+node_modules
+README.md

@@ -1,11 +1,11 @@
 FROM python:3.10.11-bullseye
 
-RUN mkdir chatty
-COPY . /chatty
+RUN mkdir va
+COPY . /va
 RUN useradd -ms /bin/bash chatty
-RUN chown -R chatty /chatty
+RUN chown -R chatty /va
 
-WORKDIR /chatty
+WORKDIR /va
 USER root
 RUN pip install poetry
 
