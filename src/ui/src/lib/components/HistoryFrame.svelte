@@ -9,12 +9,12 @@
   export let token_limits = [];
   export let stt_models = [];
 
-  async function handleDelete(context_id: string) {
+  async function handleDelete(label: string, context_id: string) {
       const isOk = await delete_context(context_id);
       if (isOk) {
-          alert(`Deletion of ${context_id} was successful!`);
+          alert(`Deletion of ${label} was successful!`);
       } else {
-          alert(`Deletion of ${context_id} has failed!`);
+          alert(`Deletion of ${label} has failed!`);
       }
       location.reload();
   }
@@ -48,7 +48,7 @@
         <SubmitButton
           bgColor="lightcoral"
           symbol="Delete"
-          on:click={handleDelete(id)}
+          on:click={handleDelete(labels[i], id)}
         >
         </SubmitButton>
       </td>
