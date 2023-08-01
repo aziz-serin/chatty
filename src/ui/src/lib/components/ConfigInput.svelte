@@ -4,7 +4,7 @@
 </script>
 
 <div class="labelContainer overlay">
-  <label>{label}</label>
+  <p>{label}</p>
 </div>
 <div class="inputContainer overlay">
   <input bind:value={inputValue} required/>
@@ -36,7 +36,7 @@
     height: 80px;
   }
 
-  label {
+  p {
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;;
     color: white;
     font-size: 18px;
