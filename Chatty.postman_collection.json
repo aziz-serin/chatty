@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "44514dee-5f10-4eac-9223-8395463508c0",
+		"name": "Chatty",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20075927"
+	},
+	"item": [
+		{
+			"name": "Chat",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"prompt\": \"Who invented television?\",\n    \"model\": \"gpt-3.5-turbo\",\n    \"token_limit\": 4000\n}"
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/chat",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conversation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"prompt\": \"Who is Donald Trump's mother?\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/conversation",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"conversation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create context",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"config\": {\n        \"chatName\": \"Friends hehehehe\"\n    },\n    \"chat_model\":\"gpt-3.5-turbo\",\n    \"token_limit\": 4000,\n    \"stt_model\": \"whisper-1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/context",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"context"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Context",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/api/context?context_id=64bfb71ce88118efc6d1ac12&isAll=false",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"context"
+					],
+					"query": [
+						{
+							"key": "context_id",
+							"value": "64bfb71ce88118efc6d1ac12"
+						},
+						{
+							"key": "isAll",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Context",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/api/context?context_id=645fe3f4892986b271afa683&isAll=true",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"context"
+					],
+					"query": [
+						{
+							"key": "context_id",
+							"value": "645fe3f4892986b271afa683"
+						},
+						{
+							"key": "isAll",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Context",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"config\": {},\n    \"chat_model\": \"gpt-3.5-turbo\",\n    \"token_limit\": 2000,\n    \"stt_model\": \"whisper-1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/context?context_id=645fe3f4892986b271afa683",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"context"
+					],
+					"query": [
+						{
+							"key": "context_id",
+							"value": "645fe3f4892986b271afa683"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Context",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/api/context?context_id=645fe3f4892986b271afa683",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"context"
+					],
+					"query": [
+						{
+							"key": "context_id",
+							"value": "645fe3f4892986b271afa683"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transcribe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/azizserin/Desktop/Untitled.m4a"
+						},
+						{
+							"key": "stt_model",
+							"value": "whisper-1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/stt?method=transcribe",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"stt"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "transcribe"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Translate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/azizserin/Desktop/Untitled.m4a"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/stt?method=translate",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"stt"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "translate"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Text to speech",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"My mother's name is Fatma Serin.\",\n    \"voice_name\": \"en-US-Neural2-J\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/tts",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"tts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://va.localtest.me",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "5005",
+			"type": "string"
+		}
+	]
+}
