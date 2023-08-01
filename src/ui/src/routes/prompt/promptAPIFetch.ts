@@ -1,6 +1,7 @@
-/** @type {import('./$types').PageLoad} */
+import {HOST_NAME} from "$lib/helpers/constants";
+
 export async function sendPrompt(variables: { token_limit: number; model: string; prompt: string }){
-    const response = await fetch('http://chatty.localtest.me:5005/api/chat', {
+    const response = await fetch(`${HOST_NAME}/api/chat`, {
         method: 'POST',
         body: JSON.stringify(variables),
         headers: {

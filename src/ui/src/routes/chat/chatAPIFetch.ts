@@ -1,4 +1,5 @@
-/** @type {import('./$types').PageLoad} */
+import {HOST_NAME} from "$lib/helpers/constants";
+
 export async function sendChat(variables: {
         token_limit: number;
         model: string;
@@ -15,7 +16,7 @@ export async function sendChat(variables: {
             config: variables.config
         });
     }
-    const response: Response = await fetch('http://chatty.localtest.me:5005/api/conversation', {
+    const response: Response = await fetch(`${HOST_NAME}/api/conversation`, {
         method: 'POST',
         body: JSON.stringify({
             prompt: variables.prompt,
@@ -34,7 +35,7 @@ export async function sendChat(variables: {
 }
 
 async function contextExists(context_id: string) {
-    const url: string = 'http://chatty.localtest.me:5005/api/context' + "?context_id=" + context_id;
+    const url: string = `${HOST_NAME}/api/context` + "?context_id=" + context_id;
     const response: Response = await fetch(url, {
         method: 'GET',
     });
@@ -46,7 +47,7 @@ async function createContext(variables: {
         chat_model: string;
         config: { chat_name: string };
     }) {
-    const response: Response = await fetch(`http://chatty.localtest.me:5005/api/context`, {
+    const response: Response = await fetch(`${HOST_NAME}/api/context`, {
         method: 'POST',
         body: JSON.stringify({
             token_limit: variables.token_limit,

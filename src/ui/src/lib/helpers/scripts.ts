@@ -1,3 +1,5 @@
+import {HOST_NAME} from "$lib/helpers/constants";
+
 export class Message {
 	public sender: string;
 	public msg: string;
@@ -8,14 +10,14 @@ export class Message {
 	}
 
 export async function delete_context(context_id: string) {
-	const response: Response = await fetch(`http://chatty.localtest.me:5005/api/context?context_id=${context_id}`, {
+	const response: Response = await fetch(`${HOST_NAME}/api/context?context_id=${context_id}`, {
 		method: 'DELETE',
 	});
 	return response.ok;
 }
 
 export async function get_context(context_id: string) {
-	const response: Response = await fetch(`http://chatty.localtest.me:5005/api/context?context_id=${context_id}`, {
+	const response: Response = await fetch(`${HOST_NAME}/api/context?context_id=${context_id}`, {
 		method: 'GET'
 	});
 	if (response.ok) {
@@ -28,7 +30,7 @@ export async function transcribeAudioFile(file: File, stt_model: string) {
 	let formData = new FormData();
 	formData.append('file', file);
 	formData.append('stt_model', stt_model);
-	const response: Response = await fetch(`http://chatty.localtest.me:5005/api/stt?method=transcribe`, {
+	const response: Response = await fetch(`${HOST_NAME}/api/stt?method=transcribe`, {
 		method: 'POST',
 		body: formData
 	});
@@ -40,7 +42,7 @@ export async function translateAudioFile(file: File, stt_model: string) {
 	let formData = new FormData();
 	formData.append('file', file);
 	formData.append('stt_model', stt_model);
-	const response: Response = await fetch(`http://chatty.localtest.me:5005/api/stt?method=translate`, {
+	const response: Response = await fetch(`${HOST_NAME}/api/stt?method=translate`, {
 		method: 'POST',
 		body: formData
 	});

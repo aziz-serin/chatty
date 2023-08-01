@@ -25,7 +25,7 @@ services:
     networks:
       chatty:
         aliases:
-          - chatty.localtest.me
+          - va.localtest.me
 
 volumes:
   mongodb_data_container:
